@@ -1,5 +1,5 @@
-import { HubPlaceholderScreen } from '@/screens/HubPlaceholderScreen'
+import { KauzyScreen } from '@/screens/KauzyScreen'
 
 export default function KauzyTab() {
-  return <HubPlaceholderScreen label="Kauzy" />
+  return <KauzyScreen />
 }
