@@ -1,4 +1,5 @@
 import { JOURNALIST } from '@/content/events'
+import { isExposed, shouldCheckpoint } from '@/game/checkpoint'
 import { applyEventIncoming } from '@/game/events'
 import { modifiedBribeMoney, modifiedCaseRiskGain } from '@/game/investments'
 
@@ -37,6 +38,7 @@ export type RunState = {
   quickCoverUsesThisAct: number
   peakRisk: number
   rngSeed: number
+  status: 'playing' | 'checkpoint' | 'exposed'
 }
 
 export type Decision = {
@@ -61,6 +63,7 @@ export function createInitialRun(rngSeed = 1): RunState {
     quickCoverUsesThisAct: 0,
     peakRisk: 0,
     rngSeed,
+    status: 'playing',
   }
 }
 
@@ -87,6 +90,9 @@ export function applyDecision(state: RunState, decision: Decision): RunState {
     caseIndex: state.caseIndex + 1,
   }
   const resolved = next.caseIndex - 1
+  if (shouldCheckpoint(resolved)) {
+    return { ...next, status: isExposed(risk) ? 'exposed' : 'checkpoint' }
+  }
   if (resolved > 0 && resolved % EVENT_EVERY === 0) {
     return applyEventIncoming(next, JOURNALIST)
   }
