@@ -50,6 +50,8 @@ export function KauzyScreen() {
             riskDelta={phase.kind === 'accept' ? phase.card.accept.risk : phase.card.refuse.risk}
             onContinue={() => setPhase({ name: 'card' })}
           />
+        ) : run.pendingEventId ? (
+          <Text style={styles.done}>Najprv vyrieš udalosť na karte Eventy.</Text>
         ) : card ? (
           <CaseCardView
             caseIndex={run.caseIndex}

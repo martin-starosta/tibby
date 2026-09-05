@@ -1,3 +1,6 @@
+import { JOURNALIST } from '@/content/events'
+import { applyEventIncoming } from '@/game/events'
+
 export type ResourceDelta = {
   money: number
   risk: number
@@ -40,6 +43,8 @@ export type Decision = {
   card: CaseCard
 }
 
+export const EVENT_EVERY = 3
+
 export function createInitialRun(rngSeed = 1): RunState {
   return {
     schema: 1,
@@ -63,11 +68,14 @@ function floor0(value: number) {
 }
 
 export function applyDecision(state: RunState, decision: Decision): RunState {
+  if (state.pendingEventId) {
+    return state
+  }
   const delayed = state.pendingDelayedRisk
   const delta = decision.type === 'accept' ? decision.card.accept : decision.card.refuse
   const money = floor0(state.money + delta.money)
   const risk = floor0(state.risk + delayed + delta.risk)
-  return {
+  const next: RunState = {
     ...state,
     money,
     risk,
@@ -77,4 +85,9 @@ export function applyDecision(state: RunState, decision: Decision): RunState {
     refusedCount: state.refusedCount + (decision.type === 'refuse' ? 1 : 0),
     caseIndex: state.caseIndex + 1,
   }
+  const resolved = next.caseIndex - 1
+  if (resolved > 0 && resolved % EVENT_EVERY === 0) {
+    return applyEventIncoming(next, JOURNALIST)
+  }
+  return next
 }
