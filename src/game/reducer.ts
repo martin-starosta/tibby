@@ -1,5 +1,6 @@
 import { JOURNALIST } from '@/content/events'
 import { applyEventIncoming } from '@/game/events'
+import { modifiedBribeMoney, modifiedCaseRiskGain } from '@/game/investments'
 
 export type ResourceDelta = {
   money: number
@@ -72,9 +73,9 @@ export function applyDecision(state: RunState, decision: Decision): RunState {
     return state
   }
   const delayed = state.pendingDelayedRisk
-  const delta = decision.type === 'accept' ? decision.card.accept : decision.card.refuse
-  const money = floor0(state.money + delta.money)
-  const risk = floor0(state.risk + delayed + delta.risk)
+  const raw = decision.type === 'accept' ? decision.card.accept : decision.card.refuse
+  const money = floor0(state.money + modifiedBribeMoney(raw.money, state))
+  const risk = floor0(state.risk + delayed + modifiedCaseRiskGain(raw.risk, state))
   const next: RunState = {
     ...state,
     money,
