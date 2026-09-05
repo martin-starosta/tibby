@@ -3,11 +3,13 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import Storage from 'expo-sqlite/kv-store'
 import { CASES } from '@/content/deck'
+import { applyQuickCover } from '@/game/quickCover'
 import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
 import { createRunRepository } from '@/save/runSave'
 import { CaseCardView } from '@/screens/CaseCardView'
 import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
+import { QuickCoverSheet } from '@/screens/QuickCoverSheet'
 import { colors } from '@/theme/colors'
 
 const repo = createRunRepository(Storage)
@@ -19,6 +21,7 @@ type Phase =
 export function KauzyScreen() {
   const [run, setRun] = useState<RunState | null>(null)
   const [phase, setPhase] = useState<Phase>({ name: 'card' })
+  const [coverOpen, setCoverOpen] = useState(false)
   const card = run ? CASES[run.caseIndex - 1] : undefined
 
   useEffect(() => {
@@ -41,7 +44,18 @@ export function KauzyScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
-      <GameHud money={run.money} risk={run.risk} />
+      <GameHud money={run.money} risk={run.risk} onPressRisk={() => setCoverOpen(true)} />
+      {coverOpen ? (
+        <QuickCoverSheet
+          money={run.money}
+          onClose={() => setCoverOpen(false)}
+          onPick={(id) => {
+            const next = applyQuickCover(run, id)
+            setRun(next)
+            void repo.save(next)
+          }}
+        />
+      ) : null}
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
         {phase.name === 'fact' ? (
           <FactSheet
