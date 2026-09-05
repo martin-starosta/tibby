@@ -1,21 +1,26 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { formatEuros, formatRiskChip } from '@/game/format'
 import { colors } from '@/theme/colors'
 
 type Props = {
   money: number
   risk: number
+  onPressRisk?: () => void
 }
 
-export function GameHud({ money, risk }: Props) {
+export function GameHud({ money, risk, onPressRisk }: Props) {
   return (
     <View style={styles.row}>
       <Text style={styles.money} accessibilityLabel="money">
         {formatEuros(money)}
       </Text>
-      <Text style={styles.risk} accessibilityLabel="risk">
-        {formatRiskChip(risk)}
-      </Text>
+      <Pressable
+        accessibilityRole="button"
+        accessibilityLabel={formatRiskChip(risk)}
+        onPress={onPressRisk}
+      >
+        <Text style={styles.risk}>{formatRiskChip(risk)}</Text>
+      </Pressable>
     </View>
   )
 }

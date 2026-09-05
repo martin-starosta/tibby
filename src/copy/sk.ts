@@ -30,3 +30,5 @@ export const BRIBE_LABEL = 'ÚPLATOK'
 export const EXPOSURE_LABEL = 'RIZIKO ODHALENIA'
 
 export const IN_REALITY = 'V skutočnosti…'
+
+export const CLOSE = 'ZAVRIEŤ'
