@@ -1,5 +1,7 @@
-# Expo HAS CHANGED
+Before making changes:
+- Read aidocs/AI_CONTEXT.md
+- Read aidocs/FEATURE_MAP.md for the affected feature.
+- Follow aidocs/INVARIANTS.md.
+- Follow existing implementation patterns.
 
-Read the exact versioned docs at https://docs.expo.dev/versions/v57.0.0/ before writing any code.
-
-Follow `.claude/skills/vercel-react-native-skills/` for React Native performance and UI rules (native navigators, Pressable, StyleSheet, expo-image).
+Run the appropriate validation commands before considering the task complete.
