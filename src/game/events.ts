@@ -1,3 +1,4 @@
+import { modifiedEventIncoming } from '@/game/investments'
 import type { RunState } from '@/game/reducer'
 import type { EventOption, GameEvent } from '@/content/events'
 
@@ -5,8 +6,8 @@ function floor0(value: number) {
   return value < 0 ? 0 : value
 }
 
-export function incomingAfterModifiers(event: GameEvent, _state: RunState) {
-  return event.incomingRisk
+export function incomingAfterModifiers(event: GameEvent, state: RunState) {
+  return modifiedEventIncoming(event.incomingRisk, event.tags, state)
 }
 
 export function applyEventIncoming(state: RunState, event: GameEvent): RunState {

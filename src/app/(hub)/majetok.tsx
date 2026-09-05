@@ -1,5 +1,5 @@
-import { HubPlaceholderScreen } from '@/screens/HubPlaceholderScreen'
+import { MajetokScreen } from '@/screens/MajetokScreen'
 
 export default function MajetokTab() {
-  return <HubPlaceholderScreen label="Majetok" />
+  return <MajetokScreen />
 }

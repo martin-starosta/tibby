@@ -1,5 +1,5 @@
-import { HubPlaceholderScreen } from '@/screens/HubPlaceholderScreen'
+import { InvesticieScreen } from '@/screens/InvesticieScreen'
 
 export default function InvesticieTab() {
-  return <HubPlaceholderScreen label="Investície" />
+  return <InvesticieScreen />
 }
