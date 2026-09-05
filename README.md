@@ -12,3 +12,8 @@ pnpm start
 ```
 
 Then press `i` for the iOS Simulator or `a` for Android.
+
+```sh
+pnpm test
+pnpm typecheck
+```
