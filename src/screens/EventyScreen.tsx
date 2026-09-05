@@ -1,21 +1,13 @@
-import { useEffect, useState } from 'react'
-import Storage from 'expo-sqlite/kv-store'
+import { useState } from 'react'
 import { JOURNALIST } from '@/content/events'
 import { resolveEventOption } from '@/game/events'
-import type { RunState } from '@/game/reducer'
-import { createRunRepository } from '@/save/runSave'
+import { useRun } from '@/save/useRun'
 import { EventScreen } from '@/screens/EventScreen'
 import { HubPlaceholderScreen } from '@/screens/HubPlaceholderScreen'
 
-const repo = createRunRepository(Storage)
-
 export function EventyScreen() {
-  const [run, setRun] = useState<RunState | null>(null)
+  const { run, update } = useRun()
   const [focusedOptionId, setFocusedOptionId] = useState('pay')
-
-  useEffect(() => {
-    repo.load().then(setRun)
-  }, [])
 
   if (!run?.pendingEventId) {
     return <HubPlaceholderScreen label="Eventy" />
@@ -29,9 +21,7 @@ export function EventyScreen() {
       focusedOptionId={focusedOptionId}
       onFocusOption={setFocusedOptionId}
       onPickOption={(id) => {
-        const next = resolveEventOption(run, JOURNALIST, id)
-        setRun(next)
-        void repo.save(next)
+        void update(resolveEventOption(run, JOURNALIST, id))
       }}
     />
   )

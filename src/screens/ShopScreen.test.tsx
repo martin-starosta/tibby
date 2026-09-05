@@ -13,6 +13,9 @@ describe('ShopScreen', () => {
       expect(screen.getByText(item.name)).toBeOnTheScreen()
     }
 
+    expect(screen.getByText('Úplatky ×1.2')).toBeOnTheScreen()
+    expect(screen.getByText('Riziko z kauz -5% · Riziko pri všetkých udalostiach -5%')).toBeOnTheScreen()
+
     await user.press(screen.getByRole('button', { name: 'Zisk' }))
     expect(screen.getByText('Firma na pranie špinavých peňazí')).toBeOnTheScreen()
     expect(screen.queryByText('Vlastné médium')).toBeNull()

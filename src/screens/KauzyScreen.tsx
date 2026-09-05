@@ -1,32 +1,25 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import Storage from 'expo-sqlite/kv-store'
 import { CASES } from '@/content/deck'
 import { applyQuickCover } from '@/game/quickCover'
-import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
-import { createRunRepository } from '@/save/runSave'
+import { applyDecision, type CaseCard } from '@/game/reducer'
+import { useRun } from '@/save/useRun'
 import { CaseCardView } from '@/screens/CaseCardView'
 import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
 import { QuickCoverSheet } from '@/screens/QuickCoverSheet'
 import { colors } from '@/theme/colors'
 
-const repo = createRunRepository(Storage)
-
 type Phase =
   | { name: 'card' }
   | { name: 'fact'; card: CaseCard; kind: 'accept' | 'refuse' }
 
 export function KauzyScreen() {
-  const [run, setRun] = useState<RunState | null>(null)
+  const { run, update } = useRun()
   const [phase, setPhase] = useState<Phase>({ name: 'card' })
   const [coverOpen, setCoverOpen] = useState(false)
   const card = run ? CASES[run.caseIndex - 1] : undefined
-
-  useEffect(() => {
-    repo.load().then(setRun)
-  }, [])
 
   if (!run) {
     return <View style={styles.screen} />
@@ -36,9 +29,7 @@ export function KauzyScreen() {
     if (!card) {
       return
     }
-    const next = applyDecision(run, { type, card })
-    await repo.save(next)
-    setRun(next)
+    await update(applyDecision(run, { type, card }))
     setPhase({ name: 'fact', card, kind: type })
   }
 
@@ -50,9 +41,7 @@ export function KauzyScreen() {
           money={run.money}
           onClose={() => setCoverOpen(false)}
           onPick={(id) => {
-            const next = applyQuickCover(run, id)
-            setRun(next)
-            void repo.save(next)
+            void update(applyQuickCover(run, id))
           }}
         />
       ) : null}

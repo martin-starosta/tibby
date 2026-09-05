@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import { INVESTMENTS, type Investment } from '@/content/investments'
+import { INVESTMENTS, type Investment, type InvestmentModifier } from '@/content/investments'
 import { formatEuros } from '@/game/format'
 import { colors } from '@/theme/colors'
 
@@ -13,6 +13,26 @@ const CHIPS = [
 ] as const
 
 type ChipId = (typeof CHIPS)[number]['id']
+
+const SUBTITLE =
+  'Investície sú trvalé pre celú hru: znižujú riziko z udalostí a kauz alebo zvyšujú úplatky.'
+
+const TAG_LABELS: Record<string, string> = {
+  '*': 'všetkých udalostiach',
+  court: 'súdnych udalostiach',
+  audit: 'auditoch',
+}
+
+function describeModifier(modifier: InvestmentModifier) {
+  switch (modifier.when) {
+    case 'eventIncoming':
+      return `Riziko pri ${modifier.tags.map((tag) => TAG_LABELS[tag] ?? tag).join(', ')} ${modifier.riskDelta}%`
+    case 'caseRiskGain':
+      return `Riziko z kauz ${modifier.riskDelta}%`
+    case 'bribeMoney':
+      return `Úplatky ×${modifier.moneyFactor}`
+  }
+}
 
 type Props = {
   money: number
@@ -29,6 +49,7 @@ export function ShopScreen({ money, ownedIds, onBuy }: Props) {
     <SafeAreaView style={styles.screen} edges={['top']}>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
         <Text style={styles.title}>INVESTÍCIE</Text>
+        <Text style={styles.subtitle}>{SUBTITLE}</Text>
         <Text style={styles.money}>{formatEuros(money)}</Text>
         <View style={styles.chips}>
           {CHIPS.map((item) => (
@@ -79,6 +100,8 @@ function ShopRow({
       style={[styles.row, disabled ? styles.disabled : null]}
     >
       <Text style={styles.name}>{item.name}</Text>
+      <Text style={styles.effect}>{item.modifiers.map(describeModifier).join(' · ')}</Text>
+      <Text style={styles.flavor}>{item.flavor}</Text>
       <Text style={styles.meta}>{owned ? 'Kúpené' : formatEuros(item.cost)}</Text>
     </Pressable>
   )
@@ -96,6 +119,16 @@ const styles = StyleSheet.create({
   title: {
     color: colors.gold,
     fontWeight: '700',
+  },
+  subtitle: {
+    color: colors.muted,
+  },
+  effect: {
+    color: colors.gold,
+  },
+  flavor: {
+    color: colors.muted,
+    fontStyle: 'italic',
   },
   money: {
     color: colors.gold,
