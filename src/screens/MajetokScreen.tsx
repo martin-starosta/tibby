@@ -1,10 +1,10 @@
 import { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Storage from 'expo-sqlite/kv-store'
 import type { RunState } from '@/game/reducer'
 import { createRunRepository } from '@/save/runSave'
 import { AssetsScreen } from '@/screens/AssetsScreen'
 
-const repo = createRunRepository(AsyncStorage)
+const repo = createRunRepository(Storage)
 
 export function MajetokScreen() {
   const [run, setRun] = useState<RunState | null>(null)
