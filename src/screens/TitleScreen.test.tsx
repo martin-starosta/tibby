@@ -8,6 +8,7 @@ import {
   SETTINGS,
   LEADERBOARDS,
   ACHIEVEMENTS,
+  SOURCES,
 } from '@/copy/sk'
 
 describe('TitleScreen', () => {
@@ -20,6 +21,7 @@ describe('TitleScreen', () => {
     expect(screen.getByText(TAGLINE)).toBeOnTheScreen()
     expect(screen.getByRole('button', { name: SETTINGS })).toBeOnTheScreen()
     expect(screen.getByRole('button', { name: HOW_TO_PLAY })).toBeOnTheScreen()
+    expect(screen.getByRole('button', { name: SOURCES })).toBeOnTheScreen()
     expect(screen.getByRole('button', { name: LEADERBOARDS })).toBeOnTheScreen()
     expect(screen.getByRole('button', { name: ACHIEVEMENTS })).toBeOnTheScreen()
 

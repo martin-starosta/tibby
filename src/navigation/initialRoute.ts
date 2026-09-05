@@ -1,5 +1,11 @@
-export type BootRoute = 'disclaimer' | 'title'
+export type BootRoute = 'age' | 'disclaimer' | 'title'
 
-export function initialRoute(disclaimerAcknowledged: boolean): BootRoute {
-  return disclaimerAcknowledged ? 'title' : 'disclaimer'
+export function initialRoute(ageConfirmed: boolean, disclaimerAcknowledged: boolean): BootRoute {
+  if (!ageConfirmed) {
+    return 'age'
+  }
+  if (!disclaimerAcknowledged) {
+    return 'disclaimer'
+  }
+  return 'title'
 }
