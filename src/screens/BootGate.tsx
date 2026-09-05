@@ -12,6 +12,7 @@ type Props = {
   onSettings?: () => void
   onLeaderboards?: () => void
   onAchievements?: () => void
+  onHowToPlay?: () => void
 }
 
 export function BootGate({
@@ -20,6 +21,7 @@ export function BootGate({
   onSettings,
   onLeaderboards,
   onAchievements,
+  onHowToPlay,
 }: Props) {
   const [acknowledged, setAcknowledged] = useState<boolean | null>(null)
 
@@ -59,6 +61,7 @@ export function BootGate({
       onSettings={onSettings}
       onLeaderboards={onLeaderboards}
       onAchievements={onAchievements}
+      onHowToPlay={onHowToPlay}
     />
   )
 }

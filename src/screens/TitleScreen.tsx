@@ -8,6 +8,7 @@ import {
   TAGLINE,
   TITLE_LOCKUP,
 } from '@/copy/sk'
+import { HOW_TO_PLAY } from '@/copy/howTo'
 import { colors } from '@/theme/colors'
 
 type Props = {
@@ -15,6 +16,7 @@ type Props = {
   onSettings?: () => void
   onLeaderboards?: () => void
   onAchievements?: () => void
+  onHowToPlay?: () => void
 }
 
 export function TitleScreen({
@@ -22,6 +24,7 @@ export function TitleScreen({
   onSettings,
   onLeaderboards,
   onAchievements,
+  onHowToPlay,
 }: Props) {
   return (
     <SafeAreaView style={styles.container}>
@@ -39,6 +42,7 @@ export function TitleScreen({
       </Pressable>
       <View style={styles.secondary}>
         <SecondaryButton label={SETTINGS} onPress={onSettings} />
+        <SecondaryButton label={HOW_TO_PLAY} onPress={onHowToPlay} />
         <SecondaryButton label={LEADERBOARDS} onPress={onLeaderboards} />
         <SecondaryButton label={ACHIEVEMENTS} onPress={onAchievements} />
       </View>
@@ -100,6 +104,8 @@ const styles = StyleSheet.create({
   },
   secondary: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     gap: 12,
   },
   iconButton: {
