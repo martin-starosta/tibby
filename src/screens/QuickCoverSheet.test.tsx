@@ -15,9 +15,13 @@ describe('QuickCoverSheet', () => {
     expect(screen.getByText('Zničenie dôkazov')).toBeOnTheScreen()
     expect(screen.getByText('Chýba €20,000')).toBeOnTheScreen()
 
+    await user.press(screen.getByRole('button', { name: 'ZAVRIEŤ' }))
+    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(onPick).not.toHaveBeenCalled()
+
     await user.press(screen.getByRole('button', { name: 'Politické krytie' }))
     expect(onPick).toHaveBeenCalledWith('cover_political')
-    expect(onClose).toHaveBeenCalledTimes(1)
+    expect(onClose).toHaveBeenCalledTimes(2)
   })
 
   it('does not pick an unaffordable row', async () => {

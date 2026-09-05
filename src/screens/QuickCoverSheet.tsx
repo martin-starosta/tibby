@@ -1,4 +1,5 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
+import { CLOSE } from '@/copy/sk'
 import { QUICK_COVER, type QuickCoverOption } from '@/content/quickCover'
 import { formatEuros } from '@/game/format'
 import { colors } from '@/theme/colors'
@@ -16,9 +17,20 @@ export function QuickCoverSheet({ money, onPick, onClose }: Props) {
       animationType="slide"
       presentationStyle="formSheet"
       onRequestClose={onClose}
+      onDismiss={onClose}
     >
       <View style={styles.sheet}>
-        <Text style={styles.title}>KRYTIE</Text>
+        <View style={styles.header}>
+          <Text style={styles.title}>KRYTIE</Text>
+          <Pressable
+            accessibilityRole="button"
+            accessibilityLabel={CLOSE}
+            onPress={onClose}
+            hitSlop={12}
+          >
+            <Text style={styles.close}>{CLOSE}</Text>
+          </Pressable>
+        </View>
         {QUICK_COVER.map((row) => (
           <CoverRow key={row.id} option={row} money={money} onPick={onPick} onClose={onClose} />
         ))}
@@ -69,8 +81,17 @@ const styles = StyleSheet.create({
     padding: 20,
     gap: 12,
   },
+  header: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
   title: {
     color: colors.gold,
+    fontWeight: '700',
+  },
+  close: {
+    color: colors.muted,
     fontWeight: '700',
   },
   row: {
