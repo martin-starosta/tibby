@@ -1,5 +1,5 @@
-import { HubPlaceholderScreen } from '@/screens/HubPlaceholderScreen'
+import { EventyScreen } from '@/screens/EventyScreen'
 
 export default function EventyTab() {
-  return <HubPlaceholderScreen label="Eventy" />
+  return <EventyScreen />
 }
