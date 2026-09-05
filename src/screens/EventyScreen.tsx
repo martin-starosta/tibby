@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Storage from 'expo-sqlite/kv-store'
 import { JOURNALIST } from '@/content/events'
 import { resolveEventOption } from '@/game/events'
 import type { RunState } from '@/game/reducer'
@@ -7,7 +7,7 @@ import { createRunRepository } from '@/save/runSave'
 import { EventScreen } from '@/screens/EventScreen'
 import { HubPlaceholderScreen } from '@/screens/HubPlaceholderScreen'
 
-const repo = createRunRepository(AsyncStorage)
+const repo = createRunRepository(Storage)
 
 export function EventyScreen() {
   const [run, setRun] = useState<RunState | null>(null)

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import Storage from 'expo-sqlite/kv-store'
 import { CASES } from '@/content/deck'
 import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
 import { createRunRepository } from '@/save/runSave'
@@ -10,7 +10,7 @@ import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
 import { colors } from '@/theme/colors'
 
-const repo = createRunRepository(AsyncStorage)
+const repo = createRunRepository(Storage)
 
 type Phase =
   | { name: 'card' }
