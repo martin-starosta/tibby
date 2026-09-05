@@ -1,0 +1,572 @@
+[
+  {
+    "id": "case_bodor",
+    "act": 1,
+    "title": "Podnikateľ Bödör",
+    "prompt": "Podnikateľ Bödör ponúka 50 000 € za nevyšetrovanie.",
+    "accept": {
+      "money": 50000,
+      "risk": 20
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_lustracia",
+    "act": 1,
+    "title": "Lustrovanie opozície",
+    "prompt": "Lustrovanie opozície. Máme sledovať politického oponenta?",
+    "accept": {
+      "money": 30000,
+      "risk": 15
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_ocistec_file",
+    "act": 1,
+    "title": "Spis Očistec",
+    "prompt": "Spis Očistec leží na stole. Zmizne za 80 000 €.",
+    "accept": {
+      "money": 80000,
+      "risk": 25
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_momky",
+    "act": 1,
+    "title": "Kauza MOM-iek",
+    "prompt": "Kauza MOM-iek. 21 milióna je len vrchol ľadovca. Zobrať podiel?",
+    "accept": {
+      "money": 29000,
+      "risk": 13
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_wiretap",
+    "act": 1,
+    "title": "Odpočúvanie",
+    "prompt": "Niekoho treba odpočúvať. Zaplatia, aby si to neriešil.",
+    "accept": {
+      "money": 32000,
+      "risk": 14
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_tender",
+    "act": 1,
+    "title": "Tendrová obálka",
+    "prompt": "Víťaz tendra ti necháva obálku. Podpíšeš ticho?",
+    "accept": {
+      "money": 35000,
+      "risk": 15
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_archive",
+    "act": 1,
+    "title": "Archív zmizne",
+    "prompt": "Starý spis má zmiznúť zo skladu. Zaplatia za stratu.",
+    "accept": {
+      "money": 38000,
+      "risk": 16
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_presspass",
+    "act": 1,
+    "title": "Novinárska preukazka",
+    "prompt": "Niekomu zobrať akreditáciu. Sú za to peniaze.",
+    "accept": {
+      "money": 41000,
+      "risk": 17
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_patrol",
+    "act": 1,
+    "title": "Hliadka na zozname",
+    "prompt": "Hliadka má ísť inam, kým auto prejde. Odmena čaká.",
+    "accept": {
+      "money": 44000,
+      "risk": 18
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_report",
+    "act": 1,
+    "title": "Hlásenie v šuplíku",
+    "prompt": "Hlásenie o korupcii má zostať v šuplíku.",
+    "accept": {
+      "money": 47000,
+      "risk": 19
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_witness",
+    "act": 2,
+    "title": "Svedok sa bojí",
+    "prompt": "Svedok chce ochranu. Druhá strana ponúka viac, aby si mlčal.",
+    "accept": {
+      "money": 50000,
+      "risk": 15
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_border",
+    "act": 2,
+    "title": "Hranica v noci",
+    "prompt": "Nočný konvoj. Niekto chce, aby kontrola zaspalá.",
+    "accept": {
+      "money": 57000,
+      "risk": 16
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_promo",
+    "act": 2,
+    "title": "Medaila za ticho",
+    "prompt": "Povýšenie výmenou za ticho v kauze.",
+    "accept": {
+      "money": 64000,
+      "risk": 17
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_lease",
+    "act": 2,
+    "title": "Nájom auta",
+    "prompt": "Služobné auto má ísť „do servisu“. Faktúra je iná.",
+    "accept": {
+      "money": 71000,
+      "risk": 18
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_server",
+    "act": 2,
+    "title": "Server v pivnici",
+    "prompt": "Záloha dát má zmiznúť. Ponúkajú úplatok.",
+    "accept": {
+      "money": 78000,
+      "risk": 19
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_list",
+    "act": 2,
+    "title": "Zoznam mien",
+    "prompt": "Zoznam mien na stole. Predať, alebo založiť?",
+    "accept": {
+      "money": 85000,
+      "risk": 20
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_raid",
+    "act": 2,
+    "title": "Razia neskoro",
+    "prompt": "Razia má prísť o hodinu neskôr. Obálka je pripravená.",
+    "accept": {
+      "money": 92000,
+      "risk": 21
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_judge_call",
+    "act": 2,
+    "title": "Telefonát zo súdu",
+    "prompt": "Niekoho spis má ísť inému sudcovi. Zaplatia za posun.",
+    "accept": {
+      "money": 99000,
+      "risk": 22
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_grant",
+    "act": 2,
+    "title": "Dotácia na papier",
+    "prompt": "Projekt na papier. Podpis za podiel.",
+    "accept": {
+      "money": 106000,
+      "risk": 23
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_club",
+    "act": 2,
+    "title": "Klub v noci",
+    "prompt": "Klub porušuje zákaz. Majiteľ volá o priazeň.",
+    "accept": {
+      "money": 113000,
+      "risk": 24
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_import",
+    "act": 3,
+    "title": "Dovoz v kontajneri",
+    "prompt": "Kontajner bez kontroly. Ponúkajú tichý podiel.",
+    "accept": {
+      "money": 100000,
+      "risk": 25
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_training",
+    "act": 3,
+    "title": "Školenie v zahraničí",
+    "prompt": "Služobná cesta, ktorá nie je služobná. Podpísať?",
+    "accept": {
+      "money": 115000,
+      "risk": 26
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_badge",
+    "act": 3,
+    "title": "Odznak na predaj",
+    "prompt": "Falošný odznak. Niekto chce, aby si to nevidel.",
+    "accept": {
+      "money": 130000,
+      "risk": 27
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_fund",
+    "act": 3,
+    "title": "Fond na kávičku",
+    "prompt": "Fond na operácie. Časť má ísť bokom.",
+    "accept": {
+      "money": 145000,
+      "risk": 28
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_camera",
+    "act": 3,
+    "title": "Kamera v kancelárii",
+    "prompt": "Záznam z kamery má zmiznúť. Úplatok na stole.",
+    "accept": {
+      "money": 160000,
+      "risk": 29
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_union",
+    "act": 3,
+    "title": "Odbory ticho",
+    "prompt": "Sťažnosť má zapadnúť. Ponúkajú vďaku v hotovosti.",
+    "accept": {
+      "money": 175000,
+      "risk": 30
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_exile",
+    "act": 3,
+    "title": "Svedok v zahraničí",
+    "prompt": "Svedok odchádza. Zaplatia, aby si mu nepomohol vrátiť sa.",
+    "accept": {
+      "money": 190000,
+      "risk": 31
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  },
+  {
+    "id": "case_last_file",
+    "act": 3,
+    "title": "Posledný spis",
+    "prompt": "Posledný veľký spis pred súdom. Zmizne za veľké peniaze.",
+    "accept": {
+      "money": 205000,
+      "risk": 32
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Denník N",
+      "sourceUrl": "https://dennikn.sk/5134387/korupcny-newsfilter-gasparov-ocistec-sa-pomaly-meni-na-peklo/",
+      "text": "V skutočnosti ide o verejne známu líniu kauze Očistec, o ktorej písali investigatívne médiá."
+    }
+  },
+  {
+    "id": "case_network",
+    "act": 3,
+    "title": "Sieť mien",
+    "prompt": "Celá sieť mien. Jeden podpis, veľký balík.",
+    "accept": {
+      "money": 220000,
+      "risk": 33
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "Pluska",
+      "sourceUrl": "https://www1.pluska.sk/spravy/fico-udrel-pre-kauzu-mom-iek-21-miliona-eur-je-len-vrchol-ladovca",
+      "text": "V skutočnosti politické zneužívanie polície patrí k dokumentovaným vzorcom v kauze."
+    }
+  },
+  {
+    "id": "case_verdict",
+    "act": 3,
+    "title": "Rozsudok v obálke",
+    "prompt": "Niekto chce, aby rozsudok počkal. Obálka je hrubá.",
+    "accept": {
+      "money": 235000,
+      "risk": 34
+    },
+    "refuse": {
+      "money": 0,
+      "risk": 0
+    },
+    "fact": {
+      "sourceName": "STVR",
+      "sourceUrl": "https://spravy.stvr.sk/spravy-po-minute/na-banskobystrickom-pracovisku-specializovaneho-trestneho-sudu-pokracuje-pojednavanie-v-kauze-ocistec/",
+      "text": "V skutočnosti pojednávania v kauze Očistec prebiehajú na Špecializovanom trestnom súde."
+    }
+  }
+]
