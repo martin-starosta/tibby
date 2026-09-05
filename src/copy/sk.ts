@@ -44,3 +44,14 @@ export const EXPOSED_STAMP = 'ODHALENÝ!'
 export const NEW_CAREER = 'Nová kariéra'
 
 export const MENU = 'Menu'
+
+export const FINALE_TITLE = 'SÚDNY DEŇ'
+
+export const FINALE_WIN = 'Nevinný! Pokračuj v kariére.'
+
+export const FINALE_LOSE = 'Odhalený! 15 rokov väzenia.'
+
+export const SOURCES = 'Zdroje'
+
+export const CLOSER =
+  'Toto je satira. Skutočné kauzy majú mená, spisy a rozsudky — nie swipe.'
