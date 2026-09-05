@@ -11,6 +11,7 @@ import { CaseCardView } from '@/screens/CaseCardView'
 import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
 import { QuickCoverSheet } from '@/screens/QuickCoverSheet'
+import { RiskGaugeScreen } from '@/screens/RiskGaugeScreen'
 import { colors } from '@/theme/colors'
 
 const KONTROLA = '/kontrola' as Href
@@ -34,6 +35,7 @@ export function KauzyScreen() {
   const { run, update } = useRun()
   const [phase, setPhase] = useState<Phase>({ name: 'card' })
   const [coverOpen, setCoverOpen] = useState(false)
+  const [gaugeOpen, setGaugeOpen] = useState(false)
   const card = run ? CASES[run.caseIndex - 1] : undefined
 
   useEffect(() => {
@@ -60,7 +62,12 @@ export function KauzyScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
-      <GameHud money={run.money} risk={run.risk} onPressRisk={() => setCoverOpen(true)} />
+      <GameHud
+        money={run.money}
+        risk={run.risk}
+        onPressRisk={() => setCoverOpen(true)}
+        onLongPressRisk={() => setGaugeOpen(true)}
+      />
       {coverOpen ? (
         <QuickCoverSheet
           money={run.money}
@@ -68,6 +75,13 @@ export function KauzyScreen() {
           onPick={(id) => {
             void update(applyQuickCover(run, id))
           }}
+        />
+      ) : null}
+      {gaugeOpen ? (
+        <RiskGaugeScreen
+          risk={run.risk}
+          ownedIds={run.ownedInvestmentIds}
+          onClose={() => setGaugeOpen(false)}
         />
       ) : null}
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
