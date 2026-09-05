@@ -2,10 +2,13 @@ import { useEffect, useState } from 'react'
 import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router, type Href } from 'expo-router'
+import Storage from 'expo-sqlite/kv-store'
+import { applyCareerProgress } from '@/career/career'
 import { CASES } from '@/content/deck'
 import { seedCheckpoint, seedFinale } from '@/game/devSeed'
 import { applyQuickCover } from '@/game/quickCover'
 import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
+import { createCareerRepository } from '@/save/careerSave'
 import { useRun } from '@/save/useRun'
 import { CaseCardView } from '@/screens/CaseCardView'
 import { FactSheet } from '@/screens/FactSheet'
@@ -16,6 +19,7 @@ import { colors } from '@/theme/colors'
 
 const KONTROLA = '/kontrola' as Href
 const FINALE = '/finale' as Href
+const careerRepo = createCareerRepository(Storage)
 
 function routeForStatus(status: RunState['status']): Href | null {
   if (status === 'checkpoint' || status === 'exposed') {
@@ -56,7 +60,10 @@ export function KauzyScreen() {
     if (!card) {
       return
     }
-    await update(applyDecision(run, { type, card }))
+    const next = applyDecision(run, { type, card })
+    const career = await careerRepo.load()
+    await careerRepo.save(applyCareerProgress(career, run, next))
+    await update(next)
     setPhase({ name: 'fact', card, kind: type })
   }
 
