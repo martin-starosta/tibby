@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { JOURNALIST } from '@/content/events'
+import { eventById } from '@/content/events'
 import { resolveEventOption } from '@/game/events'
 import { useRun } from '@/save/useRun'
 import { EventScreen } from '@/screens/EventScreen'
@@ -9,19 +9,20 @@ export function EventyScreen() {
   const { run, update } = useRun()
   const [focusedOptionId, setFocusedOptionId] = useState('pay')
 
-  if (!run?.pendingEventId) {
+  const event = run?.pendingEventId ? eventById(run.pendingEventId) : undefined
+  if (!run || !event) {
     return <HubPlaceholderScreen label="Eventy" />
   }
 
   return (
     <EventScreen
-      event={JOURNALIST}
+      event={event}
       money={run.money}
       riskAfterIncoming={run.risk}
       focusedOptionId={focusedOptionId}
       onFocusOption={setFocusedOptionId}
       onPickOption={(id) => {
-        void update(resolveEventOption(run, JOURNALIST, id))
+        void update(resolveEventOption(run, event, id))
       }}
     />
   )

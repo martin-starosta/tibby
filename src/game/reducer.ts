@@ -1,4 +1,4 @@
-import { JOURNALIST } from '@/content/events'
+import { nextQueuedEvent } from '@/content/events'
 import { isExposed, shouldCheckpoint } from '@/game/checkpoint'
 import { isFinale } from '@/game/finale'
 import { applyEventIncoming } from '@/game/events'
@@ -101,7 +101,7 @@ export function applyDecision(state: RunState, decision: Decision): RunState {
     return { ...next, status: isExposed(risk) ? 'exposed' : 'checkpoint' }
   }
   if (resolved > 0 && resolved % EVENT_EVERY === 0) {
-    return applyEventIncoming(next, JOURNALIST)
+    return applyEventIncoming(next, nextQueuedEvent(next.seenEventIds))
   }
   return next
 }
