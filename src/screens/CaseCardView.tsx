@@ -1,6 +1,5 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import { runOnJS } from 'react-native-reanimated'
 import {
   ACCEPT,
   ACCEPT_HINT,
@@ -23,15 +22,18 @@ type Props = {
 }
 
 export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
-  const swipe = Gesture.Pan().onEnd((event) => {
-    const decision = commitFromSwipe(event.translationX, 360, event.velocityX)
-    if (decision === 'accept') {
-      runOnJS(onAccept)()
-    }
-    if (decision === 'refuse') {
-      runOnJS(onRefuse)()
-    }
-  })
+  // runOnJS(true): handler stays on the JS thread, so it can call imported non-worklet code.
+  const swipe = Gesture.Pan()
+    .runOnJS(true)
+    .onEnd((event) => {
+      const decision = commitFromSwipe(event.translationX, 360, event.velocityX)
+      if (decision === 'accept') {
+        onAccept()
+      }
+      if (decision === 'refuse') {
+        onRefuse()
+      }
+    })
 
   return (
     <GestureDetector gesture={swipe}>

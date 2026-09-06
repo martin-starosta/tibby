@@ -1,5 +1,5 @@
-import { HubPlaceholderScreen } from '@/screens/HubPlaceholderScreen'
+import { StatistikyScreen } from '@/screens/StatistikyScreen'
 
 export default function StatistikyTab() {
-  return <HubPlaceholderScreen label="Štatistiky" />
+  return <StatistikyScreen />
 }

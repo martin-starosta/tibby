@@ -9,9 +9,18 @@ import { colors } from '@/theme/colors'
 type Props = {
   store: ReturnType<typeof createDisclaimerStore>
   onStartGame: () => void
+  onSettings?: () => void
+  onLeaderboards?: () => void
+  onAchievements?: () => void
 }
 
-export function BootGate({ store, onStartGame }: Props) {
+export function BootGate({
+  store,
+  onStartGame,
+  onSettings,
+  onLeaderboards,
+  onAchievements,
+}: Props) {
   const [acknowledged, setAcknowledged] = useState<boolean | null>(null)
 
   useEffect(() => {
@@ -44,7 +53,14 @@ export function BootGate({ store, onStartGame }: Props) {
     )
   }
 
-  return <TitleScreen onStartGame={onStartGame} />
+  return (
+    <TitleScreen
+      onStartGame={onStartGame}
+      onSettings={onSettings}
+      onLeaderboards={onLeaderboards}
+      onAchievements={onAchievements}
+    />
+  )
 }
 
 export function createBootStore(storage: KeyValueStore) {

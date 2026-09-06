@@ -1,4 +1,4 @@
-import { router } from 'expo-router'
+import { router, type Href } from 'expo-router'
 import Storage from 'expo-sqlite/kv-store'
 import { createInitialRun } from '@/game/reducer'
 import { asyncDisclaimerStore } from '@/onboarding/asyncDisclaimerStore'
@@ -13,6 +13,12 @@ export default function Index() {
       store={asyncDisclaimerStore}
       onStartGame={() => {
         repo.save(createInitialRun()).then(() => router.replace('/(hub)/kauzy'))
+      }}
+      onLeaderboards={() => {
+        router.push('/rebricky' as Href)
+      }}
+      onAchievements={() => {
+        router.push('/achievementy' as Href)
       }}
     />
   )
