@@ -1,7 +1,9 @@
-import { useState } from 'react'
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
+import { useEffect, useState } from 'react'
+import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { router, type Href } from 'expo-router'
 import { CASES } from '@/content/deck'
+import { seedCheckpoint } from '@/game/devSeed'
 import { applyQuickCover } from '@/game/quickCover'
 import { applyDecision, type CaseCard } from '@/game/reducer'
 import { useRun } from '@/save/useRun'
@@ -10,6 +12,8 @@ import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
 import { QuickCoverSheet } from '@/screens/QuickCoverSheet'
 import { colors } from '@/theme/colors'
+
+const KONTROLA = '/kontrola' as Href
 
 type Phase =
   | { name: 'card' }
@@ -20,6 +24,15 @@ export function KauzyScreen() {
   const [phase, setPhase] = useState<Phase>({ name: 'card' })
   const [coverOpen, setCoverOpen] = useState(false)
   const card = run ? CASES[run.caseIndex - 1] : undefined
+
+  useEffect(() => {
+    if (!run || phase.name === 'fact') {
+      return
+    }
+    if (run.status === 'checkpoint' || run.status === 'exposed') {
+      router.replace(KONTROLA)
+    }
+  }, [run, phase])
 
   if (!run) {
     return <View style={styles.screen} />
@@ -51,7 +64,12 @@ export function KauzyScreen() {
             fact={phase.card.fact}
             moneyDelta={phase.kind === 'accept' ? phase.card.accept.money : phase.card.refuse.money}
             riskDelta={phase.kind === 'accept' ? phase.card.accept.risk : phase.card.refuse.risk}
-            onContinue={() => setPhase({ name: 'card' })}
+            onContinue={() => {
+              setPhase({ name: 'card' })
+              if (run.status === 'checkpoint' || run.status === 'exposed') {
+                router.replace(KONTROLA)
+              }
+            }}
           />
         ) : run.pendingEventId ? (
           <Text style={styles.done}>Najprv vyrieš udalosť na karte Eventy.</Text>
@@ -69,6 +87,32 @@ export function KauzyScreen() {
         ) : (
           <Text style={styles.done}>Ďalšie kauzy pribudnú v ďalšom slice.</Text>
         )}
+        {__DEV__ ? (
+          <View style={styles.dev}>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="QA Kontrola 100"
+              onPress={() => {
+                void update(seedCheckpoint(100)).then(() => {
+                  router.replace(KONTROLA)
+                })
+              }}
+            >
+              <Text style={styles.done}>QA Kontrola 100</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="QA Kontrola 101"
+              onPress={() => {
+                void update(seedCheckpoint(101)).then(() => {
+                  router.replace(KONTROLA)
+                })
+              }}
+            >
+              <Text style={styles.done}>QA Kontrola 101</Text>
+            </Pressable>
+          </View>
+        ) : null}
       </ScrollView>
     </SafeAreaView>
   )
@@ -85,5 +129,9 @@ const styles = StyleSheet.create({
   },
   done: {
     color: colors.muted,
+  },
+  dev: {
+    gap: 8,
+    marginTop: 24,
   },
 })

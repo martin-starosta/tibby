@@ -32,3 +32,15 @@ export const EXPOSURE_LABEL = 'RIZIKO ODHALENIA'
 export const IN_REALITY = 'V skutočnosti…'
 
 export const CLOSE = 'ZAVRIEŤ'
+
+export const KONTROLA_TITLE = 'KONTROLA!'
+
+export const SURVIVED = 'Prežil si, ale tesne!'
+
+export const EXPOSED_BODY = 'Odhalený. Kauza sa už nedá ututlať.'
+
+export const EXPOSED_STAMP = 'ODHALENÝ!'
+
+export const NEW_CAREER = 'Nová kariéra'
+
+export const MENU = 'Menu'
