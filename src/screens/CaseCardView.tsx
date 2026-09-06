@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
 import {
   ACCEPT,
@@ -12,7 +12,12 @@ import {
 import { formatEuros } from '@/game/format'
 import type { CaseCard } from '@/game/reducer'
 import { commitFromSwipe } from '@/game/swipe'
+import { Button } from '@/ui/Button'
+import { Card } from '@/ui/Card'
+import { GameImage } from '@/ui/GameImage'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 type Props = {
   caseIndex: number
@@ -22,7 +27,6 @@ type Props = {
 }
 
 export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
-  // runOnJS(true): handler stays on the JS thread, so it can call imported non-worklet code.
   const swipe = Gesture.Pan()
     .runOnJS(true)
     .onEnd((event) => {
@@ -37,82 +41,93 @@ export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
 
   return (
     <GestureDetector gesture={swipe}>
-      <View style={styles.card}>
-        <Text style={styles.kicker}>{`KAUZA #${caseIndex}: ${card.title.toUpperCase()}`}</Text>
-        <Text style={styles.prompt}>{card.prompt}</Text>
-        <Text style={styles.stat}>{`${BRIBE_LABEL}: ${formatEuros(card.accept.money)}`}</Text>
-        <Text style={styles.stat}>{`${EXPOSURE_LABEL}: +${card.accept.risk}%`}</Text>
-        <Text style={styles.hint}>{SWIPE_HINT}</Text>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={ACCEPT}
-          onPress={onAccept}
-          style={styles.accept}
-        >
-          <Text style={styles.acceptLabel}>{ACCEPT}</Text>
-          <Text style={styles.buttonHint}>{ACCEPT_HINT}</Text>
-        </Pressable>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={REFUSE}
-          onPress={onRefuse}
-          style={styles.refuse}
-        >
-          <Text style={styles.refuseLabel}>{REFUSE}</Text>
-          <Text style={styles.buttonHint}>{REFUSE_HINT}</Text>
-        </Pressable>
-      </View>
+      <Card padded={false} style={styles.card}>
+        <View style={styles.header}>
+          <Text variant="button" color="onPrimary">
+            {`KAUZA #${caseIndex}: ${card.title.toUpperCase()}`}
+          </Text>
+        </View>
+        <View style={styles.body}>
+          <GameImage
+            source={{ kind: 'illustration', id: 'caseBribe' }}
+            style={styles.art}
+            contentFit="cover"
+          />
+          <Text variant="body" color="text">
+            {card.prompt}
+          </Text>
+          <View style={styles.stats}>
+            <Text variant="button" color="green">
+              {`${BRIBE_LABEL}: ${formatEuros(card.accept.money)}`}
+            </Text>
+            <Text variant="button" color="red">
+              {`${EXPOSURE_LABEL}: +${card.accept.risk}%`}
+            </Text>
+          </View>
+          <Text variant="caption" color="muted" style={styles.hint}>
+            {SWIPE_HINT}
+          </Text>
+          <View style={styles.actions}>
+            <Button
+              variant="accept"
+              accessibilityLabel={ACCEPT}
+              onPress={onAccept}
+              style={styles.action}
+            >
+              <Button.Text variant="accept">{ACCEPT}</Button.Text>
+              <Text variant="caption" color="onPrimary">
+                {ACCEPT_HINT}
+              </Text>
+            </Button>
+            <Button
+              variant="refuse"
+              accessibilityLabel={REFUSE}
+              onPress={onRefuse}
+              style={styles.action}
+            >
+              <Button.Text variant="refuse">{REFUSE}</Button.Text>
+              <Text variant="caption" color="onPrimary">
+                {REFUSE_HINT}
+              </Text>
+            </Button>
+          </View>
+        </View>
+      </Card>
     </GestureDetector>
   )
 }
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: '#161618',
-    borderColor: colors.gold,
-    borderWidth: 1,
-    borderRadius: 16,
+    overflow: 'hidden',
+  },
+  header: {
+    backgroundColor: colors.blue,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
+  },
+  body: {
+    padding: spacing.lg,
+    gap: spacing.md,
+  },
+  art: {
+    width: '100%',
+    height: 160,
+    borderRadius: 8,
     borderCurve: 'continuous',
-    padding: 20,
-    gap: 12,
+    backgroundColor: colors.surfaceMuted,
   },
-  kicker: {
-    color: colors.gold,
-    fontWeight: '700',
-  },
-  prompt: {
-    color: colors.text,
-  },
-  stat: {
-    color: colors.text,
-    fontWeight: '600',
+  stats: {
+    gap: spacing.xs,
   },
   hint: {
-    color: colors.muted,
+    textAlign: 'center',
   },
-  accept: {
-    backgroundColor: colors.green,
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    padding: 14,
-    gap: 4,
+  actions: {
+    flexDirection: 'row',
+    gap: spacing.md,
   },
-  acceptLabel: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  refuse: {
-    backgroundColor: colors.red,
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    padding: 14,
-    gap: 4,
-  },
-  refuseLabel: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  buttonHint: {
-    color: colors.text,
+  action: {
+    flex: 1,
   },
 })

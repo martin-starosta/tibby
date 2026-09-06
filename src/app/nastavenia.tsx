@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Storage from 'expo-sqlite/kv-store'
+import Storage from '@/save/kvStore'
 import { createSettingsStore, DEFAULT_SETTINGS, type SettingsState } from '@/settings/settingsStore'
 import { SettingsScreen } from '@/screens/SettingsScreen'
 

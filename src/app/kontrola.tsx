@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { router } from 'expo-router'
-import Storage from 'expo-sqlite/kv-store'
+import Storage from '@/save/kvStore'
 import { dismissCheckpoint } from '@/game/checkpoint'
 import { createInitialRun, type RunState } from '@/game/reducer'
 import { createRunRepository } from '@/save/runSave'

@@ -8,16 +8,18 @@
 | **Platforms** | iOS 16+, Android 10+, portrait phone |
 | **Session length** | 8–15 minutes (one career) |
 | **Player language (v1)** | Slovak |
-| **Document version** | 1.1 |
+| **Document version** | 1.2 |
 | **Status** | Pre-production |
-| **Date** | 2026-09-05 |
-| **Visual prototype** | [`docs/design/dizajns.png`](design/dizajns.png) |
+| **Date** | 2026-09-06 |
+| **Visual prototype** | Layout: [`docs/design/dizajns.png`](design/dizajns.png). Chrome kit: [`docs/design/ui-elements.png`](design/ui-elements.png). |
 
-This document is the source of truth for **rules**. The PNG is the source of truth for **layout, hierarchy, and chrome**. If they disagree on a screen, follow the PNG. If they disagree on numbers or fail states, follow this GDD.
+This document is the source of truth for **rules**. Chrome and color tokens follow [`ui-elements.png`](design/ui-elements.png). Frame composition (which screens, HUD, lists, gauge, stamp) follows [`dizajns.png`](design/dizajns.png), but **not** that composite’s dark paint — restyle those frames with the light kit. If they disagree on numbers or fail states, follow this GDD.
 
 Player-facing copy stays Slovak. Internal names, code, and this GDD are English.
 
 **v1.1** folds the visual prototype into the spec: title treatment, tabbed hub, dual swipe+buttons, Quick Cover sheet, shop categories, risk overview, career/XP frame, advisor.
+
+**v1.2** light/white art pass: off-white canvas, white cards, green primary CTA, blue headers; GDD §15 charcoal/gold look retired.
 
 ---
 
@@ -415,13 +417,13 @@ Blowback options (intimidate now, +10 later) exist so the greedy tap is not alwa
 
 ## 14. Screens and UX
 
-Visual reference: [`docs/design/dizajns.png`](design/dizajns.png) (1024×1536 composite). Portrait phone, dark chrome, gold primary CTA, red danger.
+Visual reference: [`docs/design/dizajns.png`](design/dizajns.png) (frame layout) + [`docs/design/ui-elements.png`](design/ui-elements.png) (chrome). Portrait phone, light chrome, green primary CTA, red danger, blue headers.
 
 ### 14.1 Prototype frame map
 
 | # | Frame | Ship as |
 |---|---|---|
-| 1 | Main menu | Title. Lockup `OČISTEC THE GAME`. Hero: uniformed official, cigar, drink, cash on desk. Primary: yellow **ZAČAŤ HRU**. Secondary icon row: **Nastavenia**, **Rebríčky**, **Achievementy**. Tagline under title. |
+| 1 | Main menu | Title. Lockup `OČISTEC THE GAME`. Hero: uniformed official, cigar, drink, cash on desk. Primary: green **ZAČAŤ HRU**. Secondary icon row: **Nastavenia**, **Rebríčky**, **Achievementy**. Tagline under title. |
 | 2 | Case | Kauzy tab. HUD money + risk. Card with illustration, `ÚPLATOK` / `RIZIKO ODHALENIA` before commit. Swipe hint + **PRIJMI** (green) / **ODMIETNI** (red). |
 | 3 | Event | Eventy tab or modal. `NOVINÁR NA STOPE`. Three choices. Footer = projected risk after the pick. |
 | 4 | Risk overview | Semi-circular gauge, status word (`NA HRANE`), three how-to chips (Eventy / Investície / Rozhodnutia), list of **active bonuses**. Open from tapping the HUD risk chip (long-press or second tap vs Quick Cover — see §14.3). |
@@ -510,33 +512,35 @@ Prototype shows `Level 12` and an XP bar. Rules for MVP:
 
 ## 15. Art direction
 
-Taken from [`dizajns.png`](design/dizajns.png). Do not drift back to a generic court-PDF look unless a later art pass says so.
+Taken from [`ui-elements.png`](design/ui-elements.png) (look) and [`dizajns.png`](design/dizajns.png) (frame layout). Do not drift back to charcoal/gold chrome from v1.1 or a generic court-PDF look unless a later art pass says so.
 
-**Look:** dark satirical comic. Charcoal backgrounds, gold/yellow primary buttons, red for refuse / exposed / danger. Illustrated characters (player official, journalist, advisor), not photoreal living people.
+**Look:** light satirical comic. Off-white canvas, white cards with soft shadow, charcoal body type. Illustrated characters (player official, journalist, advisor), not photoreal living people.
 
 **Title type:** stencil / distressed display for `OČISTEC THE GAME`. Body: a Slovak-capable grotesque (IBM Plex Sans or equivalent). Buttons: bold all-caps SK labels.
 
 **Surfaces:**
 
-- Hero title: full-bleed character + desk cash
-- Cards: rounded dark panels, gold hairline, illustration on top, stats under
-- Shop/event rows: list cells, price in gold, risk delta in red or green
+- Hero title: character illustration on light canvas + desk cash
+- Cards: white rounded panels (~12px radius), soft drop shadow, illustration on top, stats under
+- Case kicker: blue header bar (`KAUZA #n`); event kicker: red `EVENT!` header
+- Shop/event rows: list cells, price in green pills, risk delta in red or green
+- Quick Cover: blue **POUŽIŤ** trailing control
 - Stamp: oversized red `ODHALENÝ!` rotated ~−12° on Game Over
-- Tab bar: 5 icons, gold on selected, muted gray on idle, red dot/badge on Eventy
+- Tab bar: 5 icons, green on selected, muted gray on idle, red dot/badge on Eventy
 
-**Not:** photoreal portraits of living people, official ministry marks, blood, glossy AAA, light Material chrome.
+**Not:** photoreal portraits of living people, official ministry marks, blood, glossy AAA, charcoal/gold chrome from v1.1.
 
 **Motion:** paper/card slide on Kauzy, stamp slam on ODHALENÝ, shutter on journalist events, gauge needle on risk overview. Reduce Motion → fades.
 
-**Color roles (approximate, sample from PNG in implementation):**
+**Color roles (approximate, sample from `ui-elements.png` in implementation):**
 
 | Role | Use |
 |---|---|
-| Gold / yellow | ZAČAŤ HRU, money, selected tab, prices |
-| Green | PRIJMI, positive risk reduction |
+| Green | ZAČAŤ HRU, PRIJMI, money, shop prices, selected tab, positive risk reduction |
 | Red | ODMIETNI, ODHALENÝ stamp, high risk |
-| Dark charcoal | App chrome |
-| Off-white | Body copy |
+| Blue | Case/event headers, POUŽIŤ, HUD info accents |
+| Off-white | App canvas |
+| Charcoal | Body copy |
 
 ---
 
@@ -812,7 +816,7 @@ A playtest of 8 people who know Slovak news:
 1. Content bible: 30 sourced cases (JSON)
 2. Event deck JSON (12)
 3. Schema + reducer tests
-4. Vertical slice build matching [`dizajns.png`](design/dizajns.png)
+4. Vertical slice build matching the PNG pair (layout [`dizajns.png`](design/dizajns.png) + light kit [`ui-elements.png`](design/ui-elements.png))
 5. Legal memo before any store screenshot with real names
 
 Pixel-level spacing should be sampled from the PNG during implementation, not guessed from this prose.

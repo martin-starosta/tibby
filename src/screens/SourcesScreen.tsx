@@ -1,8 +1,9 @@
-import { ScrollView, StyleSheet, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet } from 'react-native'
 import { CASES } from '@/content/deck'
 import { SOURCES } from '@/copy/sk'
-import { colors } from '@/theme/colors'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
+import { spacing } from '@/theme/spacing'
 
 export function contentSourceUrls() {
   return [...new Set(CASES.map((card) => card.fact.sourceUrl))]
@@ -11,22 +12,21 @@ export function contentSourceUrls() {
 export function SourcesScreen({ extraUrls = [] }: { extraUrls?: string[] }) {
   const urls = [...new Set([...extraUrls, ...contentSourceUrls()])]
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentContainerStyle={styles.body}>
-        <Text style={styles.title}>{SOURCES}</Text>
+        <Text variant="title" color="text">
+          {SOURCES}
+        </Text>
         {urls.map((url) => (
-          <Text key={url} style={styles.url}>
+          <Text key={url} variant="caption" color="blue">
             {url}
           </Text>
         ))}
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  body: { padding: 20, gap: 12 },
-  title: { color: colors.gold, fontWeight: '700' },
-  url: { color: colors.muted },
+  body: { padding: spacing.xl, gap: spacing.md },
 })

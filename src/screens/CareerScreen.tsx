@@ -1,7 +1,12 @@
-import { ScrollView, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { averageRisk, xpToNext, type CareerState } from '@/career/career'
+import { Card } from '@/ui/Card'
+import { GameImage } from '@/ui/GameImage'
+import { ProgressBar } from '@/ui/ProgressBar'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 type Props = {
   career: CareerState
@@ -9,50 +14,81 @@ type Props = {
 
 export function CareerScreen({ career }: Props) {
   const need = xpToNext(career.level)
+  const progress = Math.min(100, (career.xp / need) * 100)
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentContainerStyle={styles.body}>
-        <Text style={styles.title}>KARIÉRA — ŠÉF</Text>
-        <Text style={styles.stat}>{`Level ${career.level}`}</Text>
-        <View style={styles.bar}>
-          <View style={[styles.fill, { width: `${Math.min(100, (career.xp / need) * 100)}%` }]} />
-        </View>
-        <Text style={styles.stat}>{`XP ${career.xp} / ${need}`}</Text>
-        <Text style={styles.stat}>{`Zarobené ${career.totalEarned}`}</Text>
-        <Text style={styles.stat}>{`Úplatky ${career.bribesAccepted}`}</Text>
-        <Text style={styles.stat}>{`Odmietnuté ${career.casesRefused}`}</Text>
-        <Text style={styles.stat}>{`Kontroly ${career.auditsSurvived}`}</Text>
-        <Text style={styles.stat}>{`Séria ${career.longestStreak}`}</Text>
-        <Text style={styles.stat}>{`Priemerné riziko ${Math.round(averageRisk(career))}%`}</Text>
+        <Card>
+          <View style={styles.header}>
+            <GameImage
+              source={{ kind: 'illustration', id: 'careerBoss' }}
+              style={styles.avatar}
+              contentFit="cover"
+            />
+            <View style={styles.headerCopy}>
+              <Text variant="title" color="text">
+                KARIÉRA — ŠÉF
+              </Text>
+              <Text variant="button" color="muted">
+                {`Level ${career.level}`}
+              </Text>
+            </View>
+          </View>
+          <ProgressBar progress={progress} tone="green" />
+          <Text variant="caption" color="muted">
+            {`XP ${career.xp} / ${need}`}
+          </Text>
+        </Card>
+        <StatRow label={`Zarobené ${career.totalEarned}`} />
+        <StatRow label={`Úplatky ${career.bribesAccepted}`} />
+        <StatRow label={`Odmietnuté ${career.casesRefused}`} />
+        <StatRow label={`Kontroly ${career.auditsSurvived}`} />
+        <StatRow label={`Séria ${career.longestStreak}`} />
+        <StatRow label={`Priemerné riziko ${Math.round(averageRisk(career))}%`} />
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
+  )
+}
+
+function StatRow({ label }: { label: string }) {
+  return (
+    <View style={styles.stat}>
+      <Text variant="body" color="text">
+        {label}
+      </Text>
+    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   body: {
-    padding: 20,
-    gap: 12,
+    padding: spacing.xl,
+    gap: spacing.md,
   },
-  title: {
-    color: colors.gold,
-    fontWeight: '700',
+  header: {
+    flexDirection: 'row',
+    gap: spacing.md,
+    alignItems: 'center',
+  },
+  avatar: {
+    width: 64,
+    height: 64,
+    borderRadius: 32,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceMuted,
+  },
+  headerCopy: {
+    flex: 1,
+    gap: 4,
   },
   stat: {
-    color: colors.text,
-  },
-  bar: {
-    height: 8,
-    backgroundColor: colors.muted,
-    borderRadius: 999,
-    overflow: 'hidden',
-  },
-  fill: {
-    height: 8,
-    backgroundColor: colors.gold,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: colors.surface,
+    borderRadius: 12,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: colors.border,
+    padding: spacing.md,
   },
 })

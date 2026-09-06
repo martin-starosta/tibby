@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import Storage from 'expo-sqlite/kv-store'
+import Storage from '@/save/kvStore'
 import type { CareerState } from '@/career/career'
 import { createCareerRepository } from '@/save/careerSave'
 import { AchievementsScreen } from '@/screens/AchievementsScreen'

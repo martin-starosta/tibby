@@ -1,31 +1,36 @@
-import { ScrollView, StyleSheet, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet } from 'react-native'
 import type { CareerState } from '@/career/career'
 import { formatEuros, formatRiskChip } from '@/game/format'
-import { colors } from '@/theme/colors'
+import { Card } from '@/ui/Card'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
+import { spacing } from '@/theme/spacing'
 
 export function LeaderboardsScreen({ career }: { career: CareerState }) {
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentContainerStyle={styles.body}>
-        <Text style={styles.title}>REBRÍČKY</Text>
+        <Text variant="title" color="text">
+          REBRÍČKY
+        </Text>
         {career.bestWins.length === 0 ? (
-          <Text style={styles.row}>Zatiaľ žiadne víťazstvá.</Text>
+          <Text variant="body" color="muted">
+            Zatiaľ žiadne víťazstvá.
+          </Text>
         ) : (
           career.bestWins.map((win, index) => (
-            <Text key={`${win.risk}-${index}`} style={styles.row}>
-              {`${formatRiskChip(win.risk)} · ${formatEuros(win.money)}`}
-            </Text>
+            <Card key={`${win.risk}-${index}`}>
+              <Text variant="body" color="text">
+                {`${formatRiskChip(win.risk)} · ${formatEuros(win.money)}`}
+              </Text>
+            </Card>
           ))
         )}
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  body: { padding: 20, gap: 12 },
-  title: { color: colors.gold, fontWeight: '700' },
-  row: { color: colors.text },
+  body: { padding: spacing.xl, gap: spacing.md },
 })

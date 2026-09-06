@@ -1,8 +1,8 @@
-import { useEffect, useState } from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { StyleSheet, View } from 'react-native'
+import { Pressable, ScrollView, Text as RNText } from 'react-native'
 import { router, type Href } from 'expo-router'
-import Storage from 'expo-sqlite/kv-store'
+import { useEffect, useState } from 'react'
+import Storage from '@/save/kvStore'
 import { applyCareerProgress } from '@/career/career'
 import { CASES } from '@/content/deck'
 import { seedCheckpoint, seedFinale } from '@/game/devSeed'
@@ -17,7 +17,10 @@ import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
 import { QuickCoverSheet } from '@/screens/QuickCoverSheet'
 import { RiskGaugeScreen } from '@/screens/RiskGaugeScreen'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 const KONTROLA = '/kontrola' as Href
 const FINALE = '/finale' as Href
@@ -81,7 +84,7 @@ export function KauzyScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <GameHud
         money={run.money}
         risk={run.risk}
@@ -120,7 +123,9 @@ export function KauzyScreen() {
             }}
           />
         ) : run.pendingEventId ? (
-          <Text style={styles.done}>Najprv vyrieš udalosť na karte Eventy.</Text>
+          <Text variant="body" color="muted">
+            Najprv vyrieš udalosť na karte Eventy.
+          </Text>
         ) : card ? (
           <CaseCardView
             caseIndex={run.caseIndex}
@@ -133,7 +138,9 @@ export function KauzyScreen() {
             }}
           />
         ) : (
-          <Text style={styles.done}>Ďalšie kauzy pribudnú v ďalšom slice.</Text>
+          <Text variant="body" color="muted">
+            Ďalšie kauzy pribudnú v ďalšom slice.
+          </Text>
         )}
         {__DEV__ ? (
           <View style={styles.dev}>
@@ -146,7 +153,7 @@ export function KauzyScreen() {
                 })
               }}
             >
-              <Text style={styles.done}>QA Kontrola 100</Text>
+              <RNText style={styles.devLabel}>QA Kontrola 100</RNText>
             </Pressable>
             <Pressable
               accessibilityRole="button"
@@ -157,7 +164,7 @@ export function KauzyScreen() {
                 })
               }}
             >
-              <Text style={styles.done}>QA Finále 49</Text>
+              <RNText style={styles.devLabel}>QA Finále 49</RNText>
             </Pressable>
             <Pressable
               accessibilityRole="button"
@@ -168,7 +175,7 @@ export function KauzyScreen() {
                 })
               }}
             >
-              <Text style={styles.done}>QA Finále 50</Text>
+              <RNText style={styles.devLabel}>QA Finále 50</RNText>
             </Pressable>
           </View>
         ) : null}
@@ -177,7 +184,7 @@ export function KauzyScreen() {
         visible={advisorVisible(advisorMuted, advisorDismissed)}
         onDismiss={() => setAdvisorDismissed(true)}
       />
-    </SafeAreaView>
+    </Screen>
   )
 }
 
@@ -187,14 +194,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   body: {
-    padding: 20,
-    gap: 16,
-  },
-  done: {
-    color: colors.muted,
+    padding: spacing.xl,
+    gap: spacing.lg,
   },
   dev: {
-    gap: 8,
-    marginTop: 24,
+    gap: spacing.sm,
+    marginTop: spacing.xxl,
+  },
+  devLabel: {
+    color: colors.muted,
   },
 })

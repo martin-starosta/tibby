@@ -1,8 +1,11 @@
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { Pressable, ScrollView, StyleSheet } from 'react-native'
 import { SETTINGS } from '@/copy/sk'
 import type { SettingsState } from '@/settings/settingsStore'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { radii } from '@/theme/radii'
+import { spacing } from '@/theme/spacing'
 
 type Props = {
   settings: SettingsState
@@ -11,9 +14,11 @@ type Props = {
 
 export function SettingsScreen({ settings, onChange }: Props) {
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentContainerStyle={styles.body}>
-        <Text style={styles.title}>{SETTINGS}</Text>
+        <Text variant="title" color="text">
+          {SETTINGS}
+        </Text>
         <Toggle label="Zvuky" value={settings.sfx} onToggle={() => onChange({ ...settings, sfx: !settings.sfx })} />
         <Toggle label="Haptika" value={settings.haptics} onToggle={() => onChange({ ...settings, haptics: !settings.haptics })} />
         <Toggle
@@ -32,32 +37,39 @@ export function SettingsScreen({ settings, onChange }: Props) {
           onToggle={() => onChange({ ...settings, advisorMuted: !settings.advisorMuted })}
         />
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
 function Toggle({ label, value, onToggle }: { label: string; value: boolean; onToggle: () => void }) {
   return (
-    <Pressable accessibilityRole="button" accessibilityLabel={label} accessibilityState={{ selected: value }} onPress={onToggle} style={styles.row}>
-      <Text style={styles.label}>{label}</Text>
-      <Text style={styles.value}>{value ? 'Zapnuté' : 'Vypnuté'}</Text>
+    <Pressable
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ selected: value }}
+      onPress={onToggle}
+      style={styles.row}
+    >
+      <Text variant="body" color="text">
+        {label}
+      </Text>
+      <Text variant="button" color="green">
+        {value ? 'Zapnuté' : 'Vypnuté'}
+      </Text>
     </Pressable>
   )
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  body: { padding: 20, gap: 12 },
-  title: { color: colors.gold, fontWeight: '700' },
+  body: { padding: spacing.xl, gap: spacing.md },
   row: {
-    borderColor: colors.muted,
+    backgroundColor: colors.surface,
+    borderColor: colors.border,
     borderWidth: 1,
-    borderRadius: 12,
+    borderRadius: radii.card,
     borderCurve: 'continuous',
-    padding: 14,
+    padding: spacing.md,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
-  label: { color: colors.text },
-  value: { color: colors.gold },
 })

@@ -1,8 +1,13 @@
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import type { EventOption, GameEvent } from '@/content/events'
 import { formatEuros } from '@/game/format'
+import { Card } from '@/ui/Card'
+import { GameImage } from '@/ui/GameImage'
+import { ListRow } from '@/ui/ListRow'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 type Props = {
   event: GameEvent
@@ -24,10 +29,28 @@ export function EventScreen({
   const focused = event.options.find((option) => option.id === focusedOptionId) ?? event.options[0]
   const footer = Math.max(0, riskAfterIncoming + (focused?.riskDelta ?? 0))
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
-        <Text style={styles.title}>{event.name.toUpperCase()}</Text>
-        <Text style={styles.copy}>{event.description}</Text>
+        <Card padded={false}>
+          <View style={styles.header}>
+            <Text variant="button" color="onPrimary">
+              EVENT!
+            </Text>
+          </View>
+          <View style={styles.inner}>
+            <GameImage
+              source={{ kind: 'illustration', id: 'eventJournalist' }}
+              style={styles.art}
+              contentFit="cover"
+            />
+            <Text variant="title" color="text">
+              {event.name.toUpperCase()}
+            </Text>
+            <Text variant="body" color="text">
+              {event.description}
+            </Text>
+          </View>
+        </Card>
         {event.options.map((option) => (
           <EventOptionRow
             key={option.id}
@@ -38,9 +61,11 @@ export function EventScreen({
             onPick={() => onPickOption(option.id)}
           />
         ))}
-        <Text style={styles.footer}>{`Po rozhodnutí: ${footer}%`}</Text>
+        <Text variant="button" color="red">
+          {`Po rozhodnutí: ${footer}%`}
+        </Text>
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
@@ -58,62 +83,41 @@ function EventOptionRow({
   onPick: () => void
 }) {
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={option.text}
-      accessibilityState={{ disabled }}
+    <ListRow
+      title={option.text}
+      description={`${formatEuros(option.cost)} · ${option.riskDelta}%`}
+      icon="envelope"
       disabled={disabled}
+      selected={selected}
+      accessibilityLabel={option.text}
       onPress={() => {
         onFocus()
         onPick()
       }}
-      style={[styles.option, selected ? styles.optionSelected : null, disabled ? styles.disabled : null]}
-    >
-      <Text style={styles.optionText}>{option.text}</Text>
-      <Text style={styles.optionMeta}>{`${formatEuros(option.cost)} · ${option.riskDelta}%`}</Text>
-    </Pressable>
+    />
   )
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   body: {
-    padding: 20,
-    gap: 12,
+    padding: spacing.xl,
+    gap: spacing.md,
   },
-  title: {
-    color: colors.gold,
-    fontWeight: '700',
+  header: {
+    backgroundColor: colors.red,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.md,
   },
-  copy: {
-    color: colors.text,
+  inner: {
+    padding: spacing.lg,
+    gap: spacing.md,
   },
-  option: {
-    borderColor: colors.muted,
-    borderWidth: 1,
-    borderRadius: 12,
+  art: {
+    width: 96,
+    height: 96,
+    borderRadius: 48,
     borderCurve: 'continuous',
-    padding: 14,
-    gap: 4,
-  },
-  optionSelected: {
-    borderColor: colors.gold,
-  },
-  disabled: {
-    opacity: 0.4,
-  },
-  optionText: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  optionMeta: {
-    color: colors.muted,
-  },
-  footer: {
-    color: colors.gold,
-    fontWeight: '700',
+    backgroundColor: colors.surfaceMuted,
+    alignSelf: 'center',
   },
 })

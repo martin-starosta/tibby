@@ -1,5 +1,6 @@
-import { StyleSheet, Text, View } from 'react-native'
-import { colors } from '@/theme/colors'
+import { StyleSheet } from 'react-native'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
 
 type Props = {
   label: string
@@ -7,20 +8,17 @@ type Props = {
 
 export function HubPlaceholderScreen({ label }: Props) {
   return (
-    <View style={styles.container}>
-      <Text style={styles.label}>{label}</Text>
-    </View>
+    <Screen edges={['top']} style={styles.container} safe>
+      <Text variant="body" color="muted">
+        {label}
+      </Text>
+    </Screen>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: colors.background,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  label: {
-    color: colors.muted,
   },
 })
