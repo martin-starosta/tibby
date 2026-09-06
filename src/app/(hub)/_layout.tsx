@@ -3,7 +3,7 @@ import { colors } from '@/theme/colors'
 
 export default function HubLayout() {
   return (
-    <NativeTabs tintColor={colors.gold}>
+    <NativeTabs tintColor={colors.green}>
       <NativeTabs.Trigger name="kauzy">
         <NativeTabs.Trigger.Label>Kauzy</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon sf="doc.text" md="description" />

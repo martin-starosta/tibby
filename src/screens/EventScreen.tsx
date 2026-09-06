@@ -1,8 +1,16 @@
-import { Pressable, ScrollView, StyleSheet, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import type { EventOption, GameEvent } from '@/content/events'
+import { EVENT_QUESTION, RISK_AFTER_EVENT } from '@/copy/sk'
 import { formatEuros } from '@/game/format'
+import { Card } from '@/ui/Card'
+import { GameImage } from '@/ui/GameImage'
+import { ListRow } from '@/ui/ListRow'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
+import type { IconId } from '@/theme/assets'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
+import { fonts } from '@/theme/typography'
 
 type Props = {
   event: GameEvent
@@ -24,23 +32,49 @@ export function EventScreen({
   const focused = event.options.find((option) => option.id === focusedOptionId) ?? event.options[0]
   const footer = Math.max(0, riskAfterIncoming + (focused?.riskDelta ?? 0))
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
-        <Text style={styles.title}>{event.name.toUpperCase()}</Text>
-        <Text style={styles.copy}>{event.description}</Text>
-        {event.options.map((option) => (
-          <EventOptionRow
-            key={option.id}
-            option={option}
-            disabled={option.cost > money}
-            selected={option.id === focused?.id}
-            onFocus={() => onFocusOption(option.id)}
-            onPick={() => onPickOption(option.id)}
-          />
-        ))}
-        <Text style={styles.footer}>{`Po rozhodnutí: ${footer}%`}</Text>
+        <Card padded={false} style={styles.panel}>
+          <View style={styles.header}>
+            <Text variant="title" color="onPrimary" style={styles.centered}>
+              EVENT!
+            </Text>
+          </View>
+          <View style={styles.inner}>
+            <Text variant="title" color="blue" style={styles.centered}>
+              {event.name.toUpperCase()}
+            </Text>
+            <GameImage
+              source={{ kind: 'illustration', id: 'eventJournalist' }}
+              style={styles.art}
+              contentFit="cover"
+            />
+            <Text variant="body" color="blue" style={[styles.centered, styles.description]}>
+              {event.description}
+            </Text>
+            <Text variant="button" color="text" style={styles.centered}>
+              {EVENT_QUESTION}
+            </Text>
+            {event.options.map((option) => (
+              <EventOptionRow
+                key={option.id}
+                option={option}
+                disabled={option.cost > money}
+                selected={option.id === focused?.id}
+                onFocus={() => onFocusOption(option.id)}
+                onPick={() => onPickOption(option.id)}
+              />
+            ))}
+            <Text variant="button" color="text" style={styles.centered}>
+              {RISK_AFTER_EVENT}{' '}
+              <Text variant="title" color="red">
+                {`${footer}%`}
+              </Text>
+            </Text>
+          </View>
+        </Card>
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
@@ -57,63 +91,68 @@ function EventOptionRow({
   onFocus: () => void
   onPick: () => void
 }) {
+  const riskLabel = `${option.riskDelta > 0 ? '+' : ''}${option.riskDelta}% riziko`
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={option.text}
-      accessibilityState={{ disabled }}
+    <ListRow
+      title={option.text.toUpperCase()}
+      icon={OPTION_ICON[option.id] ?? 'envelope'}
       disabled={disabled}
+      selected={selected}
+      accessibilityLabel={option.text}
+      trailing={
+        <>
+          <Text variant="button" color="green">
+            {formatEuros(option.cost)}
+          </Text>
+          <Text variant="caption" color={option.riskDelta < 0 ? 'green' : 'muted'}>
+            {riskLabel}
+          </Text>
+        </>
+      }
       onPress={() => {
         onFocus()
         onPick()
       }}
-      style={[styles.option, selected ? styles.optionSelected : null, disabled ? styles.disabled : null]}
-    >
-      <Text style={styles.optionText}>{option.text}</Text>
-      <Text style={styles.optionMeta}>{`${formatEuros(option.cost)} · ${option.riskDelta}%`}</Text>
-    </Pressable>
+    />
   )
 }
 
+const OPTION_ICON: Record<string, IconId> = {
+  pay: 'money',
+  threaten: 'fist',
+  ignore: 'eye',
+  ok: 'document',
+}
+
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   body: {
-    padding: 20,
-    gap: 12,
+    padding: spacing.xl,
+    gap: spacing.md,
   },
-  title: {
-    color: colors.gold,
-    fontWeight: '700',
+  panel: {
+    borderColor: colors.red,
+    borderWidth: 2,
   },
-  copy: {
-    color: colors.text,
+  header: {
+    backgroundColor: colors.red,
+    paddingHorizontal: spacing.lg,
+    paddingVertical: spacing.sm,
   },
-  option: {
-    borderColor: colors.muted,
-    borderWidth: 1,
-    borderRadius: 12,
+  centered: {
+    textAlign: 'center',
+  },
+  description: {
+    fontFamily: fonts.bodySemiBold,
+  },
+  inner: {
+    padding: spacing.lg,
+    gap: spacing.md,
+  },
+  art: {
+    width: '100%',
+    height: 150,
+    borderRadius: 8,
     borderCurve: 'continuous',
-    padding: 14,
-    gap: 4,
-  },
-  optionSelected: {
-    borderColor: colors.gold,
-  },
-  disabled: {
-    opacity: 0.4,
-  },
-  optionText: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  optionMeta: {
-    color: colors.muted,
-  },
-  footer: {
-    color: colors.gold,
-    fontWeight: '700',
+    backgroundColor: colors.surfaceMuted,
   },
 })

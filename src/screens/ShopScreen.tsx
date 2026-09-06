@@ -1,9 +1,15 @@
 import { useState } from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { INVESTMENTS, type Investment, type InvestmentModifier } from '@/content/investments'
 import { formatEuros } from '@/game/format'
+import { Chip } from '@/ui/Chip'
+import { ListRow } from '@/ui/ListRow'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
+import { type IconId } from '@/theme/assets'
 import { colors } from '@/theme/colors'
+import { radii } from '@/theme/radii'
+import { spacing } from '@/theme/spacing'
 
 const CHIPS = [
   { id: 'vsetko', label: 'Všetko' },
@@ -22,6 +28,8 @@ const TAG_LABELS: Record<string, string> = {
   court: 'súdnych udalostiach',
   audit: 'auditoch',
 }
+
+const SHOP_ICONS: IconId[] = ['shield', 'safe', 'monitor', 'building', 'briefcase', 'star']
 
 function describeModifier(modifier: InvestmentModifier) {
   switch (modifier.when) {
@@ -46,129 +54,90 @@ export function ShopScreen({ money, ownedIds, onBuy }: Props) {
     (item) => chip === 'vsetko' || item.categories.includes(chip),
   )
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
-        <Text style={styles.title}>INVESTÍCIE</Text>
-        <Text style={styles.subtitle}>{SUBTITLE}</Text>
-        <Text style={styles.money}>{formatEuros(money)}</Text>
+        <Text variant="title" color="text">
+          INVESTÍCIE
+        </Text>
+        <Text variant="body" color="muted">
+          {SUBTITLE}
+        </Text>
+        <Text variant="button" color="green">
+          {formatEuros(money)}
+        </Text>
         <View style={styles.chips}>
           {CHIPS.map((item) => (
-            <Pressable
+            <Chip
               key={item.id}
-              accessibilityRole="button"
-              accessibilityLabel={item.label}
+              label={item.label}
+              selected={chip === item.id}
               onPress={() => setChip(item.id)}
-              style={[styles.chip, chip === item.id ? styles.chipOn : null]}
-            >
-              <Text style={styles.chipText}>{item.label}</Text>
-            </Pressable>
+            />
           ))}
         </View>
-        {rows.map((item) => (
+        {rows.map((item, index) => (
           <ShopRow
             key={item.id}
             item={item}
+            icon={SHOP_ICONS[index % SHOP_ICONS.length]!}
             money={money}
             owned={ownedIds.includes(item.id)}
             onBuy={onBuy}
           />
         ))}
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
 function ShopRow({
   item,
+  icon,
   money,
   owned,
   onBuy,
 }: {
   item: Investment
+  icon: IconId
   money: number
   owned: boolean
   onBuy: (id: string) => void
 }) {
   const disabled = owned || item.cost > money
   return (
-    <Pressable
-      accessibilityRole="button"
-      accessibilityLabel={item.name}
-      accessibilityState={{ disabled }}
+    <ListRow
+      title={item.name}
+      description={item.modifiers.map(describeModifier).join(' · ')}
+      icon={icon}
       disabled={disabled}
+      accessibilityLabel={item.name}
       onPress={() => onBuy(item.id)}
-      style={[styles.row, disabled ? styles.disabled : null]}
-    >
-      <Text style={styles.name}>{item.name}</Text>
-      <Text style={styles.effect}>{item.modifiers.map(describeModifier).join(' · ')}</Text>
-      <Text style={styles.flavor}>{item.flavor}</Text>
-      <Text style={styles.meta}>{owned ? 'Kúpené' : formatEuros(item.cost)}</Text>
-    </Pressable>
+      trailing={
+        <View style={styles.price}>
+          <Text variant="caption" color="onPrimary">
+            {owned ? 'Kúpené' : formatEuros(item.cost)}
+          </Text>
+        </View>
+      }
+    />
   )
 }
 
 const styles = StyleSheet.create({
-  screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-  },
   body: {
-    padding: 20,
-    gap: 12,
-  },
-  title: {
-    color: colors.gold,
-    fontWeight: '700',
-  },
-  subtitle: {
-    color: colors.muted,
-  },
-  effect: {
-    color: colors.gold,
-  },
-  flavor: {
-    color: colors.muted,
-    fontStyle: 'italic',
-  },
-  money: {
-    color: colors.gold,
-    fontWeight: '700',
+    padding: spacing.xl,
+    gap: spacing.md,
   },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
+    gap: spacing.sm,
   },
-  chip: {
-    borderColor: colors.muted,
-    borderWidth: 1,
-    borderRadius: 999,
+  price: {
+    backgroundColor: colors.green,
+    borderRadius: radii.chip,
     borderCurve: 'continuous',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-  },
-  chipOn: {
-    borderColor: colors.gold,
-  },
-  chipText: {
-    color: colors.text,
-  },
-  row: {
-    borderColor: colors.muted,
-    borderWidth: 1,
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    padding: 14,
-    gap: 4,
-  },
-  disabled: {
-    opacity: 0.4,
-  },
-  name: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  meta: {
-    color: colors.muted,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
   },
 })

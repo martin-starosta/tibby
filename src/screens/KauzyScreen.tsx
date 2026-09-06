@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react'
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { router, type Href } from 'expo-router'
-import Storage from 'expo-sqlite/kv-store'
+import { useEffect, useState } from 'react'
+import Storage from '@/save/kvStore'
 import { applyCareerProgress } from '@/career/career'
 import { CASES } from '@/content/deck'
-import { seedCheckpoint, seedFinale } from '@/game/devSeed'
 import { applyQuickCover } from '@/game/quickCover'
 import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
 import { createCareerRepository } from '@/save/careerSave'
@@ -17,7 +15,10 @@ import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
 import { QuickCoverSheet } from '@/screens/QuickCoverSheet'
 import { RiskGaugeScreen } from '@/screens/RiskGaugeScreen'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 const KONTROLA = '/kontrola' as Href
 const FINALE = '/finale' as Href
@@ -81,7 +82,7 @@ export function KauzyScreen() {
   }
 
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <GameHud
         money={run.money}
         risk={run.risk}
@@ -120,7 +121,9 @@ export function KauzyScreen() {
             }}
           />
         ) : run.pendingEventId ? (
-          <Text style={styles.done}>Najprv vyrieš udalosť na karte Eventy.</Text>
+          <Text variant="body" color="muted">
+            Najprv vyrieš udalosť na karte Eventy.
+          </Text>
         ) : card ? (
           <CaseCardView
             caseIndex={run.caseIndex}
@@ -133,51 +136,16 @@ export function KauzyScreen() {
             }}
           />
         ) : (
-          <Text style={styles.done}>Ďalšie kauzy pribudnú v ďalšom slice.</Text>
+          <Text variant="body" color="muted">
+            Ďalšie kauzy pribudnú v ďalšom slice.
+          </Text>
         )}
-        {__DEV__ ? (
-          <View style={styles.dev}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="QA Kontrola 100"
-              onPress={() => {
-                void update(seedCheckpoint(100)).then(() => {
-                  router.replace(KONTROLA)
-                })
-              }}
-            >
-              <Text style={styles.done}>QA Kontrola 100</Text>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="QA Finále 49"
-              onPress={() => {
-                void update(seedFinale(49)).then(() => {
-                  router.replace(FINALE)
-                })
-              }}
-            >
-              <Text style={styles.done}>QA Finále 49</Text>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="QA Finále 50"
-              onPress={() => {
-                void update(seedFinale(50)).then(() => {
-                  router.replace(FINALE)
-                })
-              }}
-            >
-              <Text style={styles.done}>QA Finále 50</Text>
-            </Pressable>
-          </View>
-        ) : null}
       </ScrollView>
       <Advisor
         visible={advisorVisible(advisorMuted, advisorDismissed)}
         onDismiss={() => setAdvisorDismissed(true)}
       />
-    </SafeAreaView>
+    </Screen>
   )
 }
 
@@ -187,14 +155,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   body: {
-    padding: 20,
-    gap: 16,
-  },
-  done: {
-    color: colors.muted,
-  },
-  dev: {
-    gap: 8,
-    marginTop: 24,
+    padding: spacing.xl,
+    gap: spacing.lg,
   },
 })

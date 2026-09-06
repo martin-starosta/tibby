@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react'
 import { useFocusEffect } from 'expo-router'
-import Storage from 'expo-sqlite/kv-store'
+import Storage from '@/save/kvStore'
 import type { RunState } from '@/game/reducer'
 import { createRunRepository } from '@/save/runSave'
 

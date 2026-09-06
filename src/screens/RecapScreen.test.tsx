@@ -17,7 +17,7 @@ describe('RecapScreen', () => {
       />,
     )
     expect(screen.getByText(FINALE_WIN)).toBeOnTheScreen()
-    expect(screen.getByText('Peniaze €80,000')).toBeOnTheScreen()
+    expect(screen.getByText('Peniaze 80\u00A0000\u00A0€')).toBeOnTheScreen()
     expect(screen.getByText('Ochranná služba')).toBeOnTheScreen()
   })
 
@@ -36,7 +36,7 @@ describe('RecapScreen', () => {
     )
     expect(screen.getByText(FINALE_LOSE)).toBeOnTheScreen()
     expect(screen.getByText(EXPOSED_STAMP)).toBeOnTheScreen()
-    expect(screen.getByText('Peniaze €0')).toBeOnTheScreen()
+    expect(screen.getByText('Peniaze 0\u00A0€')).toBeOnTheScreen()
     expect(screen.getByText(CASES[0]!.fact.sourceUrl)).toBeOnTheScreen()
     await user.press(screen.getByRole('button', { name: SOURCES }))
     expect(onToggle).toHaveBeenCalled()

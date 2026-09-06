@@ -1,5 +1,5 @@
 import { router, type Href } from 'expo-router'
-import Storage from 'expo-sqlite/kv-store'
+import Storage from '@/save/kvStore'
 import { createInitialRun } from '@/game/reducer'
 import { asyncAgeStore } from '@/onboarding/asyncAgeStore'
 import { asyncDisclaimerStore } from '@/onboarding/asyncDisclaimerStore'

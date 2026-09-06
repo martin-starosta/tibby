@@ -1,4 +1,4 @@
-import Storage from 'expo-sqlite/kv-store'
+import Storage from '@/save/kvStore'
 import { createDisclaimerStore } from '@/onboarding/disclaimerStore'
 
 export const asyncDisclaimerStore = createDisclaimerStore(Storage)

@@ -48,7 +48,7 @@ export function BootGate({
   if (acknowledged === null || ageConfirmed === null) {
     return (
       <View style={styles.loading}>
-        <ActivityIndicator color={colors.gold} />
+        <ActivityIndicator color={colors.green} />
       </View>
     )
   }

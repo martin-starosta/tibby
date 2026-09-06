@@ -1,8 +1,10 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
+import { Pressable } from 'react-native'
 import * as WebBrowser from 'expo-web-browser'
 import { CONTINUE, IN_REALITY } from '@/copy/sk'
 import type { CaseFact } from '@/game/reducer'
-import { colors } from '@/theme/colors'
+import { Button } from '@/ui/Button'
+import { Card } from '@/ui/Card'
+import { Text } from '@/ui/Text'
 
 type Props = {
   fact: CaseFact
@@ -13,11 +15,19 @@ type Props = {
 
 export function FactSheet({ fact, moneyDelta, riskDelta, onContinue }: Props) {
   return (
-    <View style={styles.sheet}>
-      <Text style={styles.delta}>{`${moneyDelta >= 0 ? '+' : ''}${moneyDelta} €`}</Text>
-      <Text style={styles.delta}>{`${riskDelta >= 0 ? '+' : ''}${riskDelta} % riziko`}</Text>
-      <Text style={styles.title}>{IN_REALITY}</Text>
-      <Text style={styles.body}>{fact.text}</Text>
+    <Card>
+      <Text variant="button" color="green">
+        {`${moneyDelta >= 0 ? '+' : ''}${moneyDelta} €`}
+      </Text>
+      <Text variant="button" color="red">
+        {`${riskDelta >= 0 ? '+' : ''}${riskDelta} % riziko`}
+      </Text>
+      <Text variant="title" color="text">
+        {IN_REALITY}
+      </Text>
+      <Text variant="body" color="text">
+        {fact.text}
+      </Text>
       <Pressable
         accessibilityRole="link"
         accessibilityLabel={fact.sourceName}
@@ -25,51 +35,13 @@ export function FactSheet({ fact, moneyDelta, riskDelta, onContinue }: Props) {
           WebBrowser.openBrowserAsync(fact.sourceUrl)
         }}
       >
-        <Text style={styles.link}>{fact.sourceName}</Text>
+        <Text variant="body" color="blue">
+          {fact.sourceName}
+        </Text>
       </Pressable>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={CONTINUE}
-        onPress={onContinue}
-        style={styles.button}
-      >
-        <Text style={styles.buttonLabel}>{CONTINUE}</Text>
-      </Pressable>
-    </View>
+      <Button variant="primary" accessibilityLabel={CONTINUE} onPress={onContinue}>
+        <Button.Text variant="primary">{CONTINUE}</Button.Text>
+      </Button>
+    </Card>
   )
 }
-
-const styles = StyleSheet.create({
-  sheet: {
-    backgroundColor: '#161618',
-    borderRadius: 16,
-    borderCurve: 'continuous',
-    padding: 20,
-    gap: 12,
-  },
-  delta: {
-    color: colors.gold,
-    fontWeight: '700',
-  },
-  title: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  body: {
-    color: colors.text,
-  },
-  link: {
-    color: colors.gold,
-  },
-  button: {
-    backgroundColor: colors.gold,
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    padding: 14,
-    alignItems: 'center',
-  },
-  buttonLabel: {
-    color: colors.background,
-    fontWeight: '700',
-  },
-})

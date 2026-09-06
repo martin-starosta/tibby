@@ -1,6 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { formatEuros, formatRiskChip } from '@/game/format'
-import { colors } from '@/theme/colors'
+import { HudChip } from '@/ui/HudChip'
 
 type Props = {
   money: number
@@ -11,49 +9,11 @@ type Props = {
 
 export function GameHud({ money, risk, onPressRisk, onLongPressRisk }: Props) {
   return (
-    <View style={styles.row}>
-      <Text style={styles.money} accessibilityLabel="money">
-        {formatEuros(money)}
-      </Text>
-      <View style={styles.riskWrap}>
-        <Pressable
-          accessibilityRole="button"
-          accessibilityLabel={formatRiskChip(risk)}
-          onPress={onPressRisk}
-          onLongPress={onLongPressRisk}
-        >
-          <Text style={styles.risk}>{formatRiskChip(risk)}</Text>
-        </Pressable>
-        <Pressable accessibilityRole="button" accessibilityLabel="i" onPress={onLongPressRisk}>
-          <Text style={styles.info}>i</Text>
-        </Pressable>
-      </View>
-    </View>
+    <HudChip
+      money={money}
+      risk={risk}
+      onPressRisk={onPressRisk}
+      onLongPressRisk={onLongPressRisk}
+    />
   )
 }
-
-const styles = StyleSheet.create({
-  row: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    paddingHorizontal: 20,
-    paddingTop: 8,
-  },
-  money: {
-    color: colors.gold,
-    fontWeight: '700',
-  },
-  riskWrap: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  risk: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  info: {
-    color: colors.gold,
-    fontWeight: '700',
-  },
-})

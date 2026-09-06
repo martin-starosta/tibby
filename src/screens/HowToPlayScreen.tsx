@@ -1,28 +1,32 @@
-import { ScrollView, StyleSheet, Text } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { ScrollView, StyleSheet } from 'react-native'
 import { HOW_TO_CARDS, HOW_TO_PLAY } from '@/copy/howTo'
-import { colors } from '@/theme/colors'
+import { Card } from '@/ui/Card'
+import { Screen } from '@/ui/Screen'
+import { Text } from '@/ui/Text'
+import { spacing } from '@/theme/spacing'
 
 export function HowToPlayScreen() {
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
+    <Screen edges={['top']}>
       <ScrollView contentContainerStyle={styles.body}>
-        <Text style={styles.title}>{HOW_TO_PLAY}</Text>
+        <Text variant="title" color="text">
+          {HOW_TO_PLAY}
+        </Text>
         {HOW_TO_CARDS.map((card) => (
-          <Text key={card.title} style={styles.card}>
-            {card.title}
-            {'\n'}
-            {card.body}
-          </Text>
+          <Card key={card.title}>
+            <Text variant="button" color="text">
+              {card.title}
+            </Text>
+            <Text variant="body" color="muted">
+              {card.body}
+            </Text>
+          </Card>
         ))}
       </ScrollView>
-    </SafeAreaView>
+    </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  screen: { flex: 1, backgroundColor: colors.background },
-  body: { padding: 20, gap: 16 },
-  title: { color: colors.gold, fontWeight: '700' },
-  card: { color: colors.text },
+  body: { padding: spacing.xl, gap: spacing.lg },
 })

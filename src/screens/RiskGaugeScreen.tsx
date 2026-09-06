@@ -1,7 +1,10 @@
-import { Modal, StyleSheet, Text, View } from 'react-native'
+import { Modal, StyleSheet, View } from 'react-native'
 import { activeBonuses, riskStatus } from '@/game/riskStatus'
-import { formatRiskChip } from '@/game/format'
+import { Chip } from '@/ui/Chip'
+import { RiskGauge } from '@/ui/RiskGauge'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 type Props = {
   risk: number
@@ -14,15 +17,20 @@ export function RiskGaugeScreen({ risk, ownedIds, onClose }: Props) {
   return (
     <Modal visible animationType="fade" presentationStyle="formSheet" onRequestClose={onClose}>
       <View style={styles.sheet}>
-        <Text style={styles.number}>{formatRiskChip(risk)}</Text>
-        <Text style={styles.status}>{riskStatus(risk)}</Text>
+        <RiskGauge risk={risk} status={riskStatus(risk)} />
+        <Text variant="body" color="muted">
+          AKO ZNÍŽIŤ RIZIKO?
+        </Text>
         <View style={styles.chips}>
-          <Text style={styles.chip}>Eventy</Text>
-          <Text style={styles.chip}>Investície</Text>
-          <Text style={styles.chip}>Rozhodnutia</Text>
+          <Chip label="Eventy" />
+          <Chip label="Investície" />
+          <Chip label="Rozhodnutia" />
         </View>
+        <Text variant="button" color="text">
+          {`AKTÍVNE BONUSY (${bonuses.length})`}
+        </Text>
         {bonuses.map((bonus) => (
-          <Text key={bonus.id} style={styles.bonus}>
+          <Text key={bonus.id} variant="body" color="muted">
             {`${bonus.name} — ${bonus.effect}`}
           </Text>
         ))}
@@ -35,35 +43,12 @@ const styles = StyleSheet.create({
   sheet: {
     flex: 1,
     backgroundColor: colors.background,
-    padding: 24,
-    gap: 12,
-  },
-  number: {
-    color: colors.text,
-    fontWeight: '700',
-    fontSize: 32,
-  },
-  status: {
-    color: colors.gold,
-    fontWeight: '700',
-    fontSize: 24,
+    padding: spacing.xxl,
+    gap: spacing.md,
   },
   chips: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    gap: 8,
-  },
-  chip: {
-    color: colors.text,
-    borderColor: colors.muted,
-    borderWidth: 1,
-    borderRadius: 999,
-    borderCurve: 'continuous',
-    paddingHorizontal: 12,
-    paddingVertical: 8,
-    overflow: 'hidden',
-  },
-  bonus: {
-    color: colors.muted,
+    gap: spacing.sm,
   },
 })

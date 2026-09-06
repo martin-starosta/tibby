@@ -1,5 +1,4 @@
-import { Pressable, StyleSheet, Text, View } from 'react-native'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { StyleSheet, View } from 'react-native'
 import {
   CONTINUE,
   EXPOSED_BODY,
@@ -11,7 +10,13 @@ import {
 } from '@/copy/sk'
 import { formatRiskChip } from '@/game/format'
 import type { RunState } from '@/game/reducer'
+import { Button } from '@/ui/Button'
+import { GameImage } from '@/ui/GameImage'
+import { Screen } from '@/ui/Screen'
+import { Stamp } from '@/ui/Stamp'
+import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
+import { spacing } from '@/theme/spacing'
 
 type Props = {
   status: Extract<RunState['status'], 'checkpoint' | 'exposed'>
@@ -24,70 +29,63 @@ type Props = {
 export function KontrolaScreen({ status, risk, onContinue, onNewCareer, onMenu }: Props) {
   const exposed = status === 'exposed'
   return (
-    <SafeAreaView style={styles.screen} edges={['top']}>
-      <Text style={styles.title}>{KONTROLA_TITLE}</Text>
-      <Text style={styles.risk}>{formatRiskChip(risk)}</Text>
-      {exposed ? (
-        <Text style={styles.stamp}>{EXPOSED_STAMP}</Text>
-      ) : null}
-      <Text style={styles.body}>{exposed ? EXPOSED_BODY : SURVIVED}</Text>
+    <Screen edges={['top', 'bottom']} style={styles.screen}>
+      <View style={styles.banner}>
+        <Text variant="title" color="onPrimary">
+          {KONTROLA_TITLE}
+        </Text>
+      </View>
+      <GameImage
+        source={{ kind: 'illustration', id: 'kontrola' }}
+        style={styles.art}
+        contentFit="cover"
+      />
+      <Text variant="button" color="text">
+        {formatRiskChip(risk)}
+      </Text>
+      {exposed ? <Stamp label={EXPOSED_STAMP} /> : null}
+      <Text variant="body" color="text">
+        {exposed ? EXPOSED_BODY : SURVIVED}
+      </Text>
       {exposed ? (
         <View style={styles.actions}>
-          <Pressable accessibilityRole="button" accessibilityLabel={NEW_CAREER} onPress={onNewCareer} style={styles.button}>
-            <Text style={styles.buttonText}>{NEW_CAREER}</Text>
-          </Pressable>
-          <Pressable accessibilityRole="button" accessibilityLabel={MENU} onPress={onMenu} style={styles.button}>
-            <Text style={styles.buttonText}>{MENU}</Text>
-          </Pressable>
+          <Button variant="danger" accessibilityLabel={NEW_CAREER} onPress={onNewCareer}>
+            <Button.Text variant="danger">{NEW_CAREER}</Button.Text>
+          </Button>
+          <Button variant="outline" accessibilityLabel={MENU} onPress={onMenu}>
+            <Button.Text variant="outline">{MENU}</Button.Text>
+          </Button>
         </View>
       ) : (
-        <Pressable accessibilityRole="button" accessibilityLabel={CONTINUE} onPress={onContinue} style={styles.button}>
-          <Text style={styles.buttonText}>{CONTINUE}</Text>
-        </Pressable>
+        <Button variant="primary" accessibilityLabel={CONTINUE} onPress={onContinue}>
+          <Button.Text variant="primary">{CONTINUE}</Button.Text>
+        </Button>
       )}
-    </SafeAreaView>
+    </Screen>
   )
 }
 
 const styles = StyleSheet.create({
   screen: {
-    flex: 1,
-    backgroundColor: colors.background,
-    padding: 24,
-    gap: 16,
+    padding: spacing.xxl,
+    gap: spacing.lg,
     justifyContent: 'center',
   },
-  title: {
-    color: colors.gold,
-    fontWeight: '700',
-    fontSize: 28,
-  },
-  risk: {
-    color: colors.text,
-    fontWeight: '700',
-  },
-  stamp: {
-    color: colors.red,
-    fontWeight: '800',
-    fontSize: 36,
-    transform: [{ rotate: '-12deg' }],
-  },
-  body: {
-    color: colors.text,
-  },
-  actions: {
-    gap: 12,
-  },
-  button: {
-    borderColor: colors.gold,
-    borderWidth: 1,
+  banner: {
+    backgroundColor: colors.red,
     borderRadius: 12,
     borderCurve: 'continuous',
-    padding: 14,
+    padding: spacing.md,
+    alignItems: 'center',
   },
-  buttonText: {
-    color: colors.gold,
-    fontWeight: '700',
-    textAlign: 'center',
+  art: {
+    width: '100%',
+    height: 180,
+    borderRadius: 12,
+    borderCurve: 'continuous',
+    backgroundColor: colors.surfaceMuted,
+  },
+  actions: {
+    gap: spacing.md,
   },
 })

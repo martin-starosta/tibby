@@ -2,7 +2,7 @@ import { render, screen, userEvent } from '@testing-library/react-native'
 import { GameHud } from '@/screens/GameHud'
 
 describe('GameHud', () => {
-  it('tapping the risk chip opens Quick Cover and i opens the gauge', async () => {
+  it('tapping the risk chip opens Quick Cover and + opens the gauge', async () => {
     const user = userEvent.setup()
     const onPressRisk = jest.fn()
     const onLongPressRisk = jest.fn()
@@ -19,7 +19,7 @@ describe('GameHud', () => {
     expect(onPressRisk).toHaveBeenCalledTimes(1)
     expect(onLongPressRisk).not.toHaveBeenCalled()
 
-    await user.press(screen.getByRole('button', { name: 'i' }))
+    await user.press(screen.getByRole('button', { name: '+' }))
     expect(onLongPressRisk).toHaveBeenCalledTimes(1)
   })
 })

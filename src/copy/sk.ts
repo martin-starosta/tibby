@@ -23,8 +23,6 @@ export const REFUSE = 'ODMIETNI'
 
 export const REFUSE_HINT = 'Rieš to legálne. Menej peňazí, nižšie riziko.'
 
-export const SWIPE_HINT = 'SWIPE PRE ROZHODNUTIE'
-
 export const BRIBE_LABEL = 'ÚPLATOK'
 
 export const EXPOSURE_LABEL = 'RIZIKO ODHALENIA'
@@ -58,3 +56,5 @@ export const CLOSER =
 
 export const QUICK_COVER_HINT =
   'Zaplať a okamžite zníž riziko odhalenia. Niektoré krytia sa ti vrátia neskôr.'
+export const EVENT_QUESTION = 'Čo urobíš?'
+export const RISK_AFTER_EVENT = 'RIZIKO PO EVENTE:'
