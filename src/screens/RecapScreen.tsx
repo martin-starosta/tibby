@@ -4,7 +4,9 @@ import {
   CLOSER,
   EXPOSED_STAMP,
   FINALE_LOSE,
+  FINALE_SUBTITLE,
   FINALE_TITLE,
+  FINAL_RISK,
   FINALE_WIN,
   MENU,
   NEW_CAREER,
@@ -14,6 +16,7 @@ import { finaleSources, isFinaleWin, recapMoney } from '@/game/finale'
 import { formatEuros, formatRiskChip } from '@/game/format'
 import type { CaseCard, RunState } from '@/game/reducer'
 import { Button } from '@/ui/Button'
+import { Card } from '@/ui/Card'
 import { GameImage } from '@/ui/GameImage'
 import { Screen } from '@/ui/Screen'
 import { Stamp } from '@/ui/Stamp'
@@ -43,59 +46,89 @@ export function RecapScreen({
   return (
     <Screen edges={['top']}>
       <ScrollView contentContainerStyle={styles.body}>
-        <Text variant="title" color="text">
-          {FINALE_TITLE}
-        </Text>
-        <View style={styles.artWrap}>
-          <GameImage
-            source={{ kind: 'illustration', id: 'finaleCourt' }}
-            style={styles.art}
-            contentFit="cover"
-          />
-          {win ? null : <Stamp label={EXPOSED_STAMP} />}
-        </View>
-        <Text variant="body" color="text">
-          {win ? FINALE_WIN : FINALE_LOSE}
-        </Text>
-        <Text variant="body" color="muted">
-          {`Peniaze ${formatEuros(recapMoney(run))}`}
-        </Text>
-        <Text variant="body" color="muted">
-          {`Vrchol ${formatRiskChip(run.peakRisk)}`}
-        </Text>
-        <Text variant="body" color="muted">
-          {`Prijaté ${run.acceptedCount} · Odmietnuté ${run.refusedCount}`}
-        </Text>
-        {owned.map((item) => (
-          <Text key={item.id} variant="body" color="muted">
-            {item.name}
+        <Card>
+          <View style={styles.titleRow}>
+            <GameImage
+              source={{ kind: 'icon', id: 'scales' }}
+              style={styles.titleIcon}
+              contentFit="contain"
+            />
+            <Text variant="title" color="text">
+              {FINALE_TITLE}
+            </Text>
+          </View>
+          <Text variant="body" color="text" style={styles.centered}>
+            {FINALE_SUBTITLE}
           </Text>
-        ))}
-        <Text variant="body" color="text">
-          {CLOSER}
-        </Text>
-        {sourcesOpen
-          ? finaleSources(run, cases).map((url) => (
-              <Text key={url} variant="caption" color="blue">
-                {url}
+          <Text variant="button" color="text" style={styles.centered}>
+            {`${FINAL_RISK} `}
+            <Text variant="button" color="red">
+              {`${Math.trunc(run.risk)}%`}
+            </Text>
+          </Text>
+          <View style={styles.artWrap}>
+            <GameImage
+              source={{ kind: 'illustration', id: 'finaleCourt' }}
+              style={styles.art}
+              contentFit="cover"
+            />
+            {win ? null : (
+              <View style={styles.stampWrap}>
+                <Stamp label={EXPOSED_STAMP} />
+              </View>
+            )}
+          </View>
+          <Text variant="button" color={win ? 'green' : 'red'} style={styles.centered}>
+            {win ? FINALE_WIN : FINALE_LOSE}
+          </Text>
+          <Text variant="body" color="text" style={styles.centered}>
+            {CLOSER}
+          </Text>
+          <View style={styles.stats}>
+            <Text variant="caption" color="muted">
+              {`Peniaze ${formatEuros(recapMoney(run))}`}
+            </Text>
+            <Text variant="caption" color="muted">
+              {`Vrchol ${formatRiskChip(run.peakRisk)}`}
+            </Text>
+            <Text variant="caption" color="muted">
+              {`Prijaté ${run.acceptedCount} · Odmietnuté ${run.refusedCount}`}
+            </Text>
+            {owned.map((item) => (
+              <Text key={item.id} variant="caption" color="muted">
+                {item.name}
               </Text>
-            ))
-          : null}
-        <View style={styles.actions}>
-          <Button
-            variant={win ? 'primary' : 'danger'}
-            accessibilityLabel={NEW_CAREER}
-            onPress={onNewCareer}
-          >
-            <Button.Text variant={win ? 'primary' : 'danger'}>{NEW_CAREER}</Button.Text>
-          </Button>
+            ))}
+          </View>
+          {sourcesOpen
+            ? finaleSources(run, cases).map((url) => (
+                <Text key={url} variant="caption" color="blue">
+                  {url}
+                </Text>
+              ))
+            : null}
+          <View style={styles.actions}>
+            <Button
+              variant="use"
+              accessibilityLabel={MENU}
+              onPress={onMenu}
+              style={styles.action}
+            >
+              <Button.Text variant="use">{MENU}</Button.Text>
+            </Button>
+            <Button
+              variant={win ? 'primary' : 'danger'}
+              accessibilityLabel={NEW_CAREER}
+              onPress={onNewCareer}
+              style={styles.action}
+            >
+              <Button.Text variant={win ? 'primary' : 'danger'}>{NEW_CAREER}</Button.Text>
+            </Button>
+          </View>
           <Button variant="outline" accessibilityLabel={SOURCES} onPress={onToggleSources}>
             <Button.Text variant="outline">{SOURCES}</Button.Text>
           </Button>
-          <Button variant="ghost" accessibilityLabel={MENU} onPress={onMenu}>
-            <Button.Text variant="ghost">{MENU}</Button.Text>
-          </Button>
-        </View>
+        </Card>
       </ScrollView>
     </Screen>
   )
@@ -103,22 +136,46 @@ export function RecapScreen({
 
 const styles = StyleSheet.create({
   body: {
-    padding: spacing.xxl,
-    gap: spacing.md,
+    padding: spacing.xl,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: spacing.sm,
+  },
+  titleIcon: {
+    width: 32,
+    height: 32,
+  },
+  centered: {
+    textAlign: 'center',
   },
   artWrap: {
-    alignItems: 'center',
-    gap: spacing.md,
+    position: 'relative',
   },
   art: {
     width: '100%',
-    height: 180,
-    borderRadius: 12,
+    height: 170,
+    borderRadius: 8,
     borderCurve: 'continuous',
     backgroundColor: colors.surfaceMuted,
   },
+  stampWrap: {
+    position: 'absolute',
+    inset: 0,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  stats: {
+    alignItems: 'center',
+    gap: 2,
+  },
   actions: {
+    flexDirection: 'row',
     gap: spacing.md,
-    marginTop: spacing.md,
+  },
+  action: {
+    flex: 1,
   },
 })

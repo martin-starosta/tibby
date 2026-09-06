@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import { ACCEPT, ACCEPT_HINT, BRIBE_LABEL, EXPOSURE_LABEL, REFUSE, REFUSE_HINT } from '@/copy/sk'
+import { ACCEPT, ACCEPT_HINT, BRIBE_LABEL, EXPOSURE_LABEL, REFUSE, REFUSE_HINT, SWIPE_HINT } from '@/copy/sk'
 import { formatEuros } from '@/game/format'
 import { Button } from '@/ui/Button'
 import type { CaseCard } from '@/game/reducer'
@@ -75,6 +75,9 @@ export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
               {`+${card.accept.risk}%`}
             </Text>
           </View>
+          <Text variant="caption" color="muted" style={styles.centered}>
+            {SWIPE_HINT}
+          </Text>
           <View style={styles.actions}>
             <Button
               variant="accept"

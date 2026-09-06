@@ -1,7 +1,8 @@
 import { Modal, Pressable, StyleSheet, View } from 'react-native'
-import { CLOSE, QUICK_COVER_HINT } from '@/copy/sk'
+import { CLOSE, QUICK_COVER_HINT, QUICK_COVER_TITLE, USE } from '@/copy/sk'
 import { QUICK_COVER, type QuickCoverOption } from '@/content/quickCover'
 import { formatEuros } from '@/game/format'
+import { Button } from '@/ui/Button'
 import { GameImage } from '@/ui/GameImage'
 import { Text } from '@/ui/Text'
 import { type IconId } from '@/theme/assets'
@@ -9,7 +10,13 @@ import { colors } from '@/theme/colors'
 import { radii } from '@/theme/radii'
 import { spacing } from '@/theme/spacing'
 
-const COVER_ICONS: IconId[] = ['shield', 'phone', 'envelope', 'fist', 'eye']
+const COVER_ICONS: Record<string, IconId> = {
+  cover_political: 'phone',
+  bribe_prosecutor: 'envelope',
+  intimidate_press: 'fist',
+  fake_alibi: 'document',
+  destroy_evidence: 'fire',
+}
 
 type Props = {
   money: number
@@ -30,7 +37,7 @@ export function QuickCoverSheet({ money, risk, onPick, onClose }: Props) {
       <View style={styles.sheet}>
         <View style={styles.header}>
           <Text variant="title" color="text">
-            KRYTIE
+            {QUICK_COVER_TITLE}
           </Text>
           <Pressable
             accessibilityRole="button"
@@ -38,19 +45,19 @@ export function QuickCoverSheet({ money, risk, onPick, onClose }: Props) {
             onPress={onClose}
             hitSlop={12}
           >
-            <Text variant="button" color="muted">
-              {CLOSE}
+            <Text variant="title" color="muted">
+              ✕
             </Text>
           </Pressable>
         </View>
-        <Text variant="body" color="muted">
+        <Text variant="caption" color="text" style={styles.centered}>
           {QUICK_COVER_HINT}
         </Text>
-        {QUICK_COVER.map((row, index) => (
+        {QUICK_COVER.map((row) => (
           <CoverRow
             key={row.id}
             option={row}
-            icon={COVER_ICONS[index % COVER_ICONS.length]!}
+            icon={COVER_ICONS[row.id] ?? 'shield'}
             money={money}
             risk={risk}
             onPick={onPick}
@@ -99,13 +106,13 @@ function CoverRow({
         recyclingKey={icon}
       />
       <View style={styles.copy}>
-        <Text variant="button" color="text">
+        <Text variant="button" color="blue">
           {option.name}
         </Text>
-        <Text variant="button" color="green">
+        <Text variant="caption" color="green">
           {`Riziko ${Math.trunc(risk)}% → ${nextRisk}%`}
         </Text>
-        <Text variant="caption" color="muted">
+        <Text variant="caption" color={disabled ? 'red' : 'green'}>
           {disabled ? `Chýba ${formatEuros(missing)}` : `Cena ${formatEuros(option.cost)}`}
         </Text>
         {option.delayedRiskDelta > 0 ? (
@@ -114,11 +121,14 @@ function CoverRow({
           </Text>
         ) : null}
       </View>
-      <View style={styles.use}>
-        <Text variant="caption" color="onPrimary">
-          POUŽIŤ
+      <Button variant="use" disabled={disabled} accessibilityLabel={`${USE} ${option.name}`} onPress={() => {
+        onPick(option.id)
+        onClose()
+      }} style={styles.use}>
+        <Text variant="button" color="onPrimary" style={styles.useText}>
+          {USE}
         </Text>
-      </View>
+      </Button>
     </Pressable>
   )
 }
@@ -159,11 +169,16 @@ const styles = StyleSheet.create({
     flex: 1,
     gap: 2,
   },
+  centered: {
+    textAlign: 'center',
+  },
   use: {
-    backgroundColor: colors.blue,
-    borderRadius: radii.chip,
-    borderCurve: 'continuous',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+    borderRadius: radii.iconButton,
+  },
+  useText: {
+    fontSize: 14,
+    lineHeight: 18,
   },
 })

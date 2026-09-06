@@ -1,10 +1,19 @@
-import { Modal, StyleSheet, View } from 'react-native'
+import { Modal, ScrollView, StyleSheet, View } from 'react-native'
+import { ACTIVE_BONUSES, HOW_TO_LOWER_RISK, RISK_EXPLAINER } from '@/copy/sk'
 import { activeBonuses, riskStatus } from '@/game/riskStatus'
-import { Chip } from '@/ui/Chip'
+import { Card } from '@/ui/Card'
+import { GameImage } from '@/ui/GameImage'
 import { RiskGauge } from '@/ui/RiskGauge'
 import { Text } from '@/ui/Text'
+import type { IconId } from '@/theme/assets'
 import { colors } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
+
+const TIPS: Array<{ icon: IconId; label: string; hint: string }> = [
+  { icon: 'star', label: 'Eventy', hint: 'Reaguj na udalosti' },
+  { icon: 'building', label: 'Investície', hint: 'Kúp majetok, ktorý ťa kryje' },
+  { icon: 'scales', label: 'Rozhodnutia', hint: 'Nie každá kauza sa oplatí' },
+]
 
 type Props = {
   risk: number
@@ -16,25 +25,42 @@ export function RiskGaugeScreen({ risk, ownedIds, onClose }: Props) {
   const bonuses = activeBonuses(ownedIds)
   return (
     <Modal visible animationType="fade" presentationStyle="formSheet" onRequestClose={onClose}>
-      <View style={styles.sheet}>
+      <ScrollView style={styles.sheet} contentContainerStyle={styles.body}>
         <RiskGauge risk={risk} status={riskStatus(risk)} />
-        <Text variant="body" color="muted">
-          AKO ZNÍŽIŤ RIZIKO?
+        <Text variant="caption" color="text" style={styles.centered}>
+          {RISK_EXPLAINER}
         </Text>
-        <View style={styles.chips}>
-          <Chip label="Eventy" />
-          <Chip label="Investície" />
-          <Chip label="Rozhodnutia" />
-        </View>
-        <Text variant="button" color="text">
-          {`AKTÍVNE BONUSY (${bonuses.length})`}
-        </Text>
-        {bonuses.map((bonus) => (
-          <Text key={bonus.id} variant="body" color="muted">
-            {`${bonus.name} — ${bonus.effect}`}
+        <Card>
+          <Text variant="button" color="text" style={styles.centered}>
+            {HOW_TO_LOWER_RISK}
           </Text>
-        ))}
-      </View>
+          <View style={styles.tips}>
+            {TIPS.map((tip) => (
+              <View key={tip.label} style={styles.tip}>
+                <GameImage
+                  source={{ kind: 'icon', id: tip.icon }}
+                  style={styles.tipIcon}
+                  contentFit="contain"
+                />
+                <Text variant="caption" color="text" style={styles.tipLabel}>
+                  {tip.label}
+                </Text>
+                <Text variant="caption" color="muted" style={styles.centered}>
+                  {tip.hint}
+                </Text>
+              </View>
+            ))}
+          </View>
+          <Text variant="button" color="text" style={styles.centered}>
+            {`${ACTIVE_BONUSES} (${bonuses.length})`}
+          </Text>
+          {bonuses.map((bonus) => (
+            <Text key={bonus.id} variant="caption" color="muted" style={styles.centered}>
+              {`${bonus.name} — ${bonus.effect}`}
+            </Text>
+          ))}
+        </Card>
+      </ScrollView>
     </Modal>
   )
 }
@@ -43,12 +69,34 @@ const styles = StyleSheet.create({
   sheet: {
     flex: 1,
     backgroundColor: colors.background,
-    padding: spacing.xxl,
-    gap: spacing.md,
   },
-  chips: {
+  body: {
+    padding: spacing.xl,
+    gap: spacing.md,
+    alignItems: 'stretch',
+  },
+  centered: {
+    textAlign: 'center',
+  },
+  tips: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: spacing.sm,
+  },
+  tip: {
+    flex: 1,
+    alignItems: 'center',
+    gap: 2,
+    backgroundColor: colors.background,
+    borderRadius: 8,
+    borderCurve: 'continuous',
+    padding: spacing.sm,
+  },
+  tipIcon: {
+    width: 36,
+    height: 36,
+  },
+  tipLabel: {
+    fontWeight: '700',
+    textTransform: 'uppercase',
   },
 })

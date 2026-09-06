@@ -7,9 +7,10 @@ describe('CareerScreen', () => {
     await render(
       <CareerScreen career={{ ...createInitialCareer(), level: 2, xp: 40, bribesAccepted: 3 }} />,
     )
-    expect(screen.getByText('KARIÉRA — ŠÉF')).toBeOnTheScreen()
-    expect(screen.getByText('Level 2')).toBeOnTheScreen()
-    expect(screen.getByText('XP 40 / 200')).toBeOnTheScreen()
-    expect(screen.getByText('Úplatky 3')).toBeOnTheScreen()
+    expect(screen.getByText('KARIÉRA')).toBeOnTheScreen()
+    expect(screen.getByText('ÚROVEŇ 2')).toBeOnTheScreen()
+    expect(screen.getByText('40 / 200 XP')).toBeOnTheScreen()
+    expect(screen.getByText('PRIJATÉ ÚPLATKY')).toBeOnTheScreen()
+    expect(screen.getByText('3')).toBeOnTheScreen()
   })
 })

@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native'
+import { Pressable, StyleSheet, View } from 'react-native'
 import { HOW_TO_PLAY } from '@/copy/howTo'
 import {
   ACHIEVEMENTS,
@@ -11,7 +11,9 @@ import {
 } from '@/copy/sk'
 import { Button } from '@/ui/Button'
 import { GameImage } from '@/ui/GameImage'
+import { Card } from '@/ui/Card'
 import { Screen } from '@/ui/Screen'
+import type { IconId } from '@/theme/assets'
 import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
 import { radii } from '@/theme/radii'
@@ -40,14 +42,16 @@ export function TitleScreen({
         <Text variant="display" color="text" style={styles.title}>
           {TITLE_LOCKUP}
         </Text>
+        <View style={styles.taglineWrap}>
+          <Text variant="button" color="text" style={styles.tagline}>
+            {TAGLINE}
+          </Text>
+        </View>
         <GameImage
           source={{ kind: 'illustration', id: 'titleHero' }}
           style={styles.art}
           contentFit="contain"
         />
-        <Text variant="caption" color="muted" style={styles.tagline}>
-          {TAGLINE}
-        </Text>
       </View>
       <Button
         variant="primary"
@@ -57,33 +61,52 @@ export function TitleScreen({
       >
         <Button.Text variant="primary">{START_GAME}</Button.Text>
       </Button>
-      <View style={styles.secondary}>
-        <SecondaryButton label={SETTINGS} onPress={onSettings} />
-        <SecondaryButton label={LEADERBOARDS} onPress={onLeaderboards} />
-        <SecondaryButton label={ACHIEVEMENTS} onPress={onAchievements} />
-        <SecondaryButton label={HOW_TO_PLAY} onPress={onHowToPlay} />
-        <SecondaryButton label={SOURCES} onPress={onSources} />
+      <Card padded={false} style={styles.menu}>
+        <MenuButton label={SETTINGS} glyph="⚙" onPress={onSettings} />
+        <MenuButton label={LEADERBOARDS} icon="trophy" onPress={onLeaderboards} />
+        <MenuButton label={ACHIEVEMENTS} icon="star" onPress={onAchievements} last />
+      </Card>
+      <View style={styles.links}>
+        <Button variant="ghost" accessibilityLabel={HOW_TO_PLAY} onPress={onHowToPlay} style={styles.link}>
+          <Button.Text variant="ghost">{HOW_TO_PLAY}</Button.Text>
+        </Button>
+        <Button variant="ghost" accessibilityLabel={SOURCES} onPress={onSources} style={styles.link}>
+          <Button.Text variant="ghost">{SOURCES}</Button.Text>
+        </Button>
       </View>
     </Screen>
   )
 }
 
-function SecondaryButton({
+function MenuButton({
   label,
+  icon,
+  glyph,
+  last,
   onPress,
 }: {
   label: string
+  icon?: IconId
+  glyph?: string
+  last?: boolean
   onPress?: () => void
 }) {
   return (
-    <Button
-      variant="ghost"
+    <Pressable
+      accessibilityRole="button"
       accessibilityLabel={label}
       onPress={onPress}
-      style={styles.iconButton}
+      style={[styles.menuItem, last ? null : styles.menuDivider]}
     >
-      <Button.Text variant="ghost">{label}</Button.Text>
-    </Button>
+      {icon ? (
+        <GameImage source={{ kind: 'icon', id: icon }} style={styles.menuIcon} contentFit="contain" />
+      ) : (
+        <Text style={styles.menuGlyph}>{glyph}</Text>
+      )}
+      <Text variant="caption" color="text" style={styles.menuLabel}>
+        {label}
+      </Text>
+    </Pressable>
   )
 }
 
@@ -92,7 +115,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: spacing.xxl,
-    gap: spacing.xxxl,
+    gap: spacing.xl,
   },
   hero: {
     alignItems: 'center',
@@ -102,28 +125,59 @@ const styles = StyleSheet.create({
   title: {
     textAlign: 'center',
   },
+  taglineWrap: {
+    backgroundColor: colors.gold,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.xs,
+    transform: [{ rotate: '-2deg' }],
+  },
+  tagline: {
+    textAlign: 'center',
+    fontSize: 14,
+    lineHeight: 18,
+  },
   art: {
     width: '100%',
     height: 220,
     borderRadius: radii.card,
     borderCurve: 'continuous',
-    backgroundColor: colors.surfaceMuted,
-  },
-  tagline: {
-    textAlign: 'center',
   },
   start: {
-    minWidth: 220,
+    minWidth: 240,
   },
-  secondary: {
+  menu: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+    alignSelf: 'stretch',
+  },
+  menuItem: {
+    flex: 1,
+    alignItems: 'center',
+    gap: spacing.xs,
+    paddingVertical: spacing.md,
+  },
+  menuDivider: {
+    borderRightWidth: 1,
+    borderRightColor: colors.border,
+  },
+  menuIcon: {
+    width: 32,
+    height: 32,
+  },
+  menuGlyph: {
+    fontSize: 28,
+    lineHeight: 32,
+    color: colors.text,
+  },
+  menuLabel: {
+    fontWeight: '700',
+    fontSize: 11,
+  },
+  links: {
+    flexDirection: 'row',
     gap: spacing.md,
   },
-  iconButton: {
+  link: {
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
-    minWidth: 100,
   },
 })

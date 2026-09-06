@@ -9,8 +9,8 @@ type Props = {
   status: string
 }
 
-const SIZE = 200
-const STROKE = 16
+const SIZE = 260
+const STROKE = 26
 const R = (SIZE - STROKE) / 2
 const CX = SIZE / 2
 const CY = SIZE / 2
@@ -40,20 +40,16 @@ export function RiskGauge({ risk, status }: Props) {
         <Path d={arc(0, 60)} stroke={colors.green} strokeWidth={STROKE} fill="none" strokeLinecap="round" />
         <Path d={arc(60, 120)} stroke={colors.gold} strokeWidth={STROKE} fill="none" strokeLinecap="round" />
         <Path d={arc(120, 180)} stroke={colors.red} strokeWidth={STROKE} fill="none" strokeLinecap="round" />
-        <Circle cx={CX} cy={CY} r={6} fill={colors.text} />
-        <Path
-          d={`M ${CX} ${CY} L ${tip.x} ${tip.y}`}
-          stroke={colors.text}
-          strokeWidth={3}
-          strokeLinecap="round"
-        />
+        <Circle cx={tip.x} cy={tip.y} r={STROKE / 2 + 2} fill={colors.surface} stroke={colors.text} strokeWidth={3} />
       </Svg>
-      <Text variant="title" color="text" style={styles.pct}>
-        {`${pct}%`}
-      </Text>
-      <Text variant="button" color="red" style={styles.status}>
-        {status}
-      </Text>
+      <View style={styles.center}>
+        <Text variant="display" color="red" style={styles.pct}>
+          {`${pct}%`}
+        </Text>
+        <Text variant="button" color="red" style={styles.status}>
+          {status}
+        </Text>
+      </View>
     </View>
   )
 }
@@ -63,8 +59,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: spacing.sm,
   },
+  center: {
+    position: 'absolute',
+    top: SIZE / 2 - 40,
+    alignItems: 'center',
+  },
   pct: {
-    marginTop: -8,
+    fontSize: 48,
+    lineHeight: 52,
   },
   status: {
     textTransform: 'uppercase',

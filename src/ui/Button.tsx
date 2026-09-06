@@ -39,15 +39,26 @@ const greenFace: ViewStyle = {
   ...shadows.raised,
 }
 
+const redFace: ViewStyle = {
+  experimental_backgroundImage: 'linear-gradient(180deg, #F0553A 0%, #C92E12 100%)',
+  borderWidth: 2,
+  borderColor: '#9E240E',
+  ...shadows.raised,
+}
+
+const blueFace: ViewStyle = {
+  experimental_backgroundImage: 'linear-gradient(180deg, #4C8DF5 0%, #2457C9 100%)',
+  borderWidth: 2,
+  borderColor: '#1B449E',
+  ...shadows.raised,
+}
+
 const face: Partial<Record<Variant, ViewStyle>> = {
   primary: greenFace,
   accept: greenFace,
-  refuse: {
-    experimental_backgroundImage: 'linear-gradient(180deg, #F0553A 0%, #C92E12 100%)',
-    borderWidth: 2,
-    borderColor: '#9E240E',
-    ...shadows.raised,
-  },
+  refuse: redFace,
+  danger: redFace,
+  use: blueFace,
 }
 
 const labelColor: Record<Variant, keyof typeof colors> = {

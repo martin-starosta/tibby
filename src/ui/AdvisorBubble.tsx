@@ -6,6 +6,7 @@ import { colors } from '@/theme/colors'
 import { radii } from '@/theme/radii'
 import { shadows } from '@/theme/shadows'
 import { spacing } from '@/theme/spacing'
+import { fonts } from '@/theme/typography'
 
 /** Clearance above NativeTabs so the bubble is not covered by the bar. */
 const TAB_BAR_CLEARANCE = 56
@@ -29,7 +30,10 @@ export function AdvisorBubble({ tip, visible, onDismiss }: Props) {
         contentFit="cover"
       />
       <View style={styles.bubble}>
-        <Text variant="caption" color="text">
+        <Text variant="button" color="blue">
+          TIP:
+        </Text>
+        <Text variant="caption" color="blue" style={styles.tip}>
           {tip}
         </Text>
         <Pressable
@@ -50,18 +54,19 @@ const styles = StyleSheet.create({
   wrap: {
     position: 'absolute',
     right: spacing.lg,
-    maxWidth: 260,
+    left: spacing.lg,
     flexDirection: 'row',
-    alignItems: 'flex-end',
+    alignItems: 'center',
     gap: spacing.sm,
   },
   avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: radii.chip,
+    width: 64,
+    height: 64,
+    borderRadius: radii.card,
     borderCurve: 'continuous',
-    borderWidth: 2,
-    borderColor: colors.surface,
+  },
+  tip: {
+    fontFamily: fonts.bodySemiBold,
   },
   bubble: {
     flex: 1,

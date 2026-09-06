@@ -1,7 +1,10 @@
 import { useState } from 'react'
 import { ScrollView, StyleSheet, View } from 'react-native'
 import { INVESTMENTS, type Investment, type InvestmentModifier } from '@/content/investments'
+import { YOUR_MONEY } from '@/copy/sk'
 import { formatEuros } from '@/game/format'
+import { Button } from '@/ui/Button'
+import { GameImage } from '@/ui/GameImage'
 import { Chip } from '@/ui/Chip'
 import { ListRow } from '@/ui/ListRow'
 import { Screen } from '@/ui/Screen'
@@ -12,11 +15,11 @@ import { radii } from '@/theme/radii'
 import { spacing } from '@/theme/spacing'
 
 const CHIPS = [
-  { id: 'vsetko', label: 'Všetko' },
-  { id: 'ochrana', label: 'Ochrana' },
-  { id: 'zisk', label: 'Zisk' },
-  { id: 'vplyv', label: 'Vplyv' },
-] as const
+  { id: 'vsetko', label: 'Všetko', icon: 'car' },
+  { id: 'ochrana', label: 'Ochrana', icon: 'shield' },
+  { id: 'zisk', label: 'Zisk', icon: 'money' },
+  { id: 'vplyv', label: 'Vplyv', icon: 'building' },
+] as const satisfies ReadonlyArray<{ id: string; label: string; icon: IconId }>
 
 type ChipId = (typeof CHIPS)[number]['id']
 
@@ -29,7 +32,13 @@ const TAG_LABELS: Record<string, string> = {
   audit: 'auditoch',
 }
 
-const SHOP_ICONS: IconId[] = ['shield', 'safe', 'monitor', 'building', 'briefcase', 'star']
+const SHOP_ICONS: Record<string, IconId> = {
+  inv_media: 'monitor',
+  inv_judge: 'scales',
+  inv_ally: 'briefcase',
+  inv_laundry: 'safe',
+  inv_guard: 'shield',
+}
 
 function describeModifier(modifier: InvestmentModifier) {
   switch (modifier.when) {
@@ -56,35 +65,44 @@ export function ShopScreen({ money, ownedIds, onBuy }: Props) {
   return (
     <Screen edges={['top']}>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
-        <Text variant="title" color="text">
+        <Text variant="title" color="text" style={styles.centered}>
           INVESTÍCIE
         </Text>
-        <Text variant="body" color="muted">
+        <Text variant="caption" color="muted" style={styles.centered}>
           {SUBTITLE}
-        </Text>
-        <Text variant="button" color="green">
-          {formatEuros(money)}
         </Text>
         <View style={styles.chips}>
           {CHIPS.map((item) => (
             <Chip
               key={item.id}
               label={item.label}
+              icon={item.icon}
               selected={chip === item.id}
               onPress={() => setChip(item.id)}
             />
           ))}
         </View>
-        {rows.map((item, index) => (
+        {rows.map((item) => (
           <ShopRow
             key={item.id}
             item={item}
-            icon={SHOP_ICONS[index % SHOP_ICONS.length]!}
+            icon={SHOP_ICONS[item.id] ?? 'star'}
             money={money}
             owned={ownedIds.includes(item.id)}
             onBuy={onBuy}
           />
         ))}
+        <View style={styles.footer}>
+          <Text variant="button" color="text">
+            {YOUR_MONEY}
+          </Text>
+          <View style={styles.footerValue}>
+            <Text variant="title" color="green">
+              {formatEuros(money)}
+            </Text>
+            <GameImage source={{ kind: 'icon', id: 'money' }} style={styles.moneyIcon} contentFit="contain" />
+          </View>
+        </View>
       </ScrollView>
     </Screen>
   )
@@ -113,11 +131,17 @@ function ShopRow({
       accessibilityLabel={item.name}
       onPress={() => onBuy(item.id)}
       trailing={
-        <View style={styles.price}>
-          <Text variant="caption" color="onPrimary">
+        <Button
+          variant="primary"
+          disabled={disabled}
+          accessibilityLabel={`${item.name} ${owned ? 'Kúpené' : formatEuros(item.cost)}`}
+          onPress={() => onBuy(item.id)}
+          style={styles.price}
+        >
+          <Text variant="button" color="onPrimary" style={styles.priceText}>
             {owned ? 'Kúpené' : formatEuros(item.cost)}
           </Text>
-        </View>
+        </Button>
       }
     />
   )
@@ -128,16 +152,37 @@ const styles = StyleSheet.create({
     padding: spacing.xl,
     gap: spacing.md,
   },
+  centered: {
+    textAlign: 'center',
+  },
   chips: {
     flexDirection: 'row',
-    flexWrap: 'wrap',
     gap: spacing.sm,
   },
   price: {
-    backgroundColor: colors.green,
-    borderRadius: radii.chip,
-    borderCurve: 'continuous',
     paddingHorizontal: spacing.md,
     paddingVertical: spacing.sm,
+    borderRadius: radii.iconButton,
+  },
+  priceText: {
+    fontSize: 14,
+    lineHeight: 18,
+  },
+  footer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingTop: spacing.sm,
+    borderTopWidth: 1,
+    borderTopColor: colors.border,
+  },
+  footerValue: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  moneyIcon: {
+    width: 28,
+    height: 28,
   },
 })

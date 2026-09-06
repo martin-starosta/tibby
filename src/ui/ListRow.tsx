@@ -50,7 +50,7 @@ export function ListRow({
         />
       ) : null}
       <View style={styles.copy}>
-        <Text variant="button" color="text">
+        <Text variant="button" color="blue">
           {title}
         </Text>
         {description ? (
