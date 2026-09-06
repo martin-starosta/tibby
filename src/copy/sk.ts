@@ -23,8 +23,6 @@ export const REFUSE = 'ODMIETNI'
 
 export const REFUSE_HINT = 'Rieš to legálne. Menej peňazí, nižšie riziko.'
 
-export const SWIPE_HINT = 'SWIPE PRE ROZHODNUTIE'
-
 export const BRIBE_LABEL = 'ÚPLATOK'
 
 export const EXPOSURE_LABEL = 'RIZIKO ODHALENIA'

@@ -1,10 +1,14 @@
 import { Pressable, StyleSheet, View } from 'react-native'
+import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { GameImage } from '@/ui/GameImage'
 import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
 import { radii } from '@/theme/radii'
 import { shadows } from '@/theme/shadows'
 import { spacing } from '@/theme/spacing'
+
+/** Clearance above NativeTabs so the bubble is not covered by the bar. */
+const TAB_BAR_CLEARANCE = 56
 
 type Props = {
   tip: string
@@ -13,11 +17,12 @@ type Props = {
 }
 
 export function AdvisorBubble({ tip, visible, onDismiss }: Props) {
+  const insets = useSafeAreaInsets()
   if (!visible) {
     return null
   }
   return (
-    <View style={styles.wrap}>
+    <View style={[styles.wrap, { bottom: insets.bottom + TAB_BAR_CLEARANCE }]}>
       <GameImage
         source={{ kind: 'illustration', id: 'advisor' }}
         style={styles.avatar}
@@ -45,7 +50,6 @@ const styles = StyleSheet.create({
   wrap: {
     position: 'absolute',
     right: spacing.lg,
-    bottom: spacing.xxl,
     maxWidth: 260,
     flexDirection: 'row',
     alignItems: 'flex-end',

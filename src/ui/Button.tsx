@@ -10,6 +10,7 @@ import type { ReactNode } from 'react'
 import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
 import { radii } from '@/theme/radii'
+import { shadows } from '@/theme/shadows'
 import { spacing } from '@/theme/spacing'
 
 type Variant = 'primary' | 'accept' | 'refuse' | 'ghost' | 'use' | 'danger' | 'outline'
@@ -28,6 +29,25 @@ const bg: Record<Variant, string> = {
   use: colors.blue,
   danger: colors.red,
   outline: 'transparent',
+}
+
+/** Glossy game-style faces for the decision buttons (matches the design PNGs). */
+const greenFace: ViewStyle = {
+  experimental_backgroundImage: 'linear-gradient(180deg, #7FC13A 0%, #4E9A16 100%)',
+  borderWidth: 2,
+  borderColor: '#3B7A0F',
+  ...shadows.raised,
+}
+
+const face: Partial<Record<Variant, ViewStyle>> = {
+  primary: greenFace,
+  accept: greenFace,
+  refuse: {
+    experimental_backgroundImage: 'linear-gradient(180deg, #F0553A 0%, #C92E12 100%)',
+    borderWidth: 2,
+    borderColor: '#9E240E',
+    ...shadows.raised,
+  },
 }
 
 const labelColor: Record<Variant, keyof typeof colors> = {
@@ -55,6 +75,7 @@ export function Button({
         styles.base,
         { backgroundColor: bg[variant] },
         variant === 'outline' ? styles.outline : null,
+        face[variant],
         disabled ? styles.disabled : null,
         style,
       ]}
@@ -73,7 +94,11 @@ function ButtonText({
   children: ReactNode
 }) {
   return (
-    <Text variant="button" color={labelColor[variant]} style={styles.label}>
+    <Text
+      variant="button"
+      color={labelColor[variant]}
+      style={[styles.label, face[variant] ? styles.embossed : null]}
+    >
       {children}
     </Text>
   )
@@ -105,6 +130,13 @@ const styles = StyleSheet.create({
   },
   label: {
     textAlign: 'center',
+  },
+  embossed: {
+    fontSize: 20,
+    lineHeight: 24,
+    textShadowColor: 'rgba(0, 0, 0, 0.6)',
+    textShadowOffset: { width: 0, height: 2 },
+    textShadowRadius: 1,
   },
   icon: {
     alignItems: 'center',

@@ -1,11 +1,9 @@
-import { StyleSheet, View } from 'react-native'
-import { Pressable, ScrollView, Text as RNText } from 'react-native'
+import { ScrollView, StyleSheet, View } from 'react-native'
 import { router, type Href } from 'expo-router'
 import { useEffect, useState } from 'react'
 import Storage from '@/save/kvStore'
 import { applyCareerProgress } from '@/career/career'
 import { CASES } from '@/content/deck'
-import { seedCheckpoint, seedFinale } from '@/game/devSeed'
 import { applyQuickCover } from '@/game/quickCover'
 import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
 import { createCareerRepository } from '@/save/careerSave'
@@ -142,43 +140,6 @@ export function KauzyScreen() {
             Ďalšie kauzy pribudnú v ďalšom slice.
           </Text>
         )}
-        {__DEV__ ? (
-          <View style={styles.dev}>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="QA Kontrola 100"
-              onPress={() => {
-                void update(seedCheckpoint(100)).then(() => {
-                  router.replace(KONTROLA)
-                })
-              }}
-            >
-              <RNText style={styles.devLabel}>QA Kontrola 100</RNText>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="QA Finále 49"
-              onPress={() => {
-                void update(seedFinale(49)).then(() => {
-                  router.replace(FINALE)
-                })
-              }}
-            >
-              <RNText style={styles.devLabel}>QA Finále 49</RNText>
-            </Pressable>
-            <Pressable
-              accessibilityRole="button"
-              accessibilityLabel="QA Finále 50"
-              onPress={() => {
-                void update(seedFinale(50)).then(() => {
-                  router.replace(FINALE)
-                })
-              }}
-            >
-              <RNText style={styles.devLabel}>QA Finále 50</RNText>
-            </Pressable>
-          </View>
-        ) : null}
       </ScrollView>
       <Advisor
         visible={advisorVisible(advisorMuted, advisorDismissed)}
@@ -196,12 +157,5 @@ const styles = StyleSheet.create({
   body: {
     padding: spacing.xl,
     gap: spacing.lg,
-  },
-  dev: {
-    gap: spacing.sm,
-    marginTop: spacing.xxl,
-  },
-  devLabel: {
-    color: colors.muted,
   },
 })

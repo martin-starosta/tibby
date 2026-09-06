@@ -1,23 +1,16 @@
 import { StyleSheet, View } from 'react-native'
 import { Gesture, GestureDetector } from 'react-native-gesture-handler'
-import {
-  ACCEPT,
-  ACCEPT_HINT,
-  BRIBE_LABEL,
-  EXPOSURE_LABEL,
-  REFUSE,
-  REFUSE_HINT,
-  SWIPE_HINT,
-} from '@/copy/sk'
+import { ACCEPT, ACCEPT_HINT, BRIBE_LABEL, EXPOSURE_LABEL, REFUSE, REFUSE_HINT } from '@/copy/sk'
 import { formatEuros } from '@/game/format'
+import { Button } from '@/ui/Button'
 import type { CaseCard } from '@/game/reducer'
 import { commitFromSwipe } from '@/game/swipe'
-import { Button } from '@/ui/Button'
 import { Card } from '@/ui/Card'
 import { GameImage } from '@/ui/GameImage'
 import { Text } from '@/ui/Text'
 import { colors } from '@/theme/colors'
 import { spacing } from '@/theme/spacing'
+import { fonts } from '@/theme/typography'
 
 type Props = {
   caseIndex: number
@@ -64,9 +57,6 @@ export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
               {`${EXPOSURE_LABEL}: +${card.accept.risk}%`}
             </Text>
           </View>
-          <Text variant="caption" color="muted" style={styles.hint}>
-            {SWIPE_HINT}
-          </Text>
           <View style={styles.actions}>
             <Button
               variant="accept"
@@ -75,7 +65,7 @@ export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
               style={styles.action}
             >
               <Button.Text variant="accept">{ACCEPT}</Button.Text>
-              <Text variant="caption" color="onPrimary">
+              <Text variant="caption" color="onPrimary" style={styles.actionHint}>
                 {ACCEPT_HINT}
               </Text>
             </Button>
@@ -86,7 +76,7 @@ export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
               style={styles.action}
             >
               <Button.Text variant="refuse">{REFUSE}</Button.Text>
-              <Text variant="caption" color="onPrimary">
+              <Text variant="caption" color="onPrimary" style={styles.actionHint}>
                 {REFUSE_HINT}
               </Text>
             </Button>
@@ -120,14 +110,19 @@ const styles = StyleSheet.create({
   stats: {
     gap: spacing.xs,
   },
-  hint: {
-    textAlign: 'center',
-  },
   actions: {
     flexDirection: 'row',
     gap: spacing.md,
   },
   action: {
     flex: 1,
+    paddingHorizontal: spacing.md,
+  },
+  actionHint: {
+    textAlign: 'center',
+    fontFamily: fonts.bodySemiBold,
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 0, height: 1.5 },
+    textShadowRadius: 0.5,
   },
 })

@@ -13,9 +13,9 @@ describe('QuickCoverSheet', () => {
     expect(screen.getByText('Úplatok prokurátorovi')).toBeOnTheScreen()
     expect(screen.getByText('Falošné alibi')).toBeOnTheScreen()
     expect(screen.getByText('Zničenie dôkazov')).toBeOnTheScreen()
-    expect(screen.getByText('Chýba €20,000')).toBeOnTheScreen()
+    expect(screen.getByText('Chýba 20\u00A0000\u00A0€')).toBeOnTheScreen()
     expect(screen.getByText('Riziko 62% → 32%')).toBeOnTheScreen()
-    expect(screen.getByText('Cena €50,000')).toBeOnTheScreen()
+    expect(screen.getByText('Cena 50\u00A0000\u00A0€')).toBeOnTheScreen()
     expect(screen.getByText('Neskôr +10% rizika')).toBeOnTheScreen()
 
     await user.press(screen.getByRole('button', { name: 'ZAVRIEŤ' }))

@@ -37,6 +37,11 @@ export const stamps = {
   odhaleny: require('../../assets/game/stamps/odhaleny.png'),
 } as const
 
+export const buttons = {
+  accept: require('../../assets/game/ui-elements/btn-accept.png'),
+  reject: require('../../assets/game/ui-elements/btn-reject.png'),
+} as const
+
 export const logo = {
   lockup: require('../../assets/game/logo/lockup.png'),
 } as const

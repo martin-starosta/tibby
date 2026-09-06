@@ -1,6 +1,7 @@
 import { Image } from 'expo-image'
 import { StyleSheet, type ImageStyle, type StyleProp } from 'react-native'
 import {
+  buttons,
   icons,
   illustrations,
   logo,
@@ -13,6 +14,7 @@ type SourceKey =
   | { kind: 'illustration'; id: keyof typeof illustrations }
   | { kind: 'stamp'; id: keyof typeof stamps }
   | { kind: 'logo'; id: keyof typeof logo }
+  | { kind: 'button'; id: keyof typeof buttons }
 
 type Props = {
   source: SourceKey
@@ -31,6 +33,8 @@ function resolve(source: SourceKey) {
       return stamps[source.id]
     case 'logo':
       return logo[source.id]
+    case 'button':
+      return buttons[source.id]
   }
 }
 
