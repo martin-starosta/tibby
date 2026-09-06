@@ -36,25 +36,43 @@ export function CaseCardView({ caseIndex, card, onAccept, onRefuse }: Props) {
     <GestureDetector gesture={swipe}>
       <Card padded={false} style={styles.card}>
         <View style={styles.header}>
-          <Text variant="button" color="onPrimary">
-            {`KAUZA #${caseIndex}: ${card.title.toUpperCase()}`}
+          <Text variant="title" color="onPrimary" style={styles.centered}>
+            {`KAUZA #${caseIndex}`}
           </Text>
         </View>
         <View style={styles.body}>
+          <Text variant="title" color="text" style={styles.centered}>
+            {card.title.toUpperCase()}
+          </Text>
+          <Text variant="body" color="text" style={styles.centered}>
+            {card.prompt}
+          </Text>
           <GameImage
             source={{ kind: 'illustration', id: 'caseBribe' }}
             style={styles.art}
             contentFit="cover"
           />
-          <Text variant="body" color="text">
-            {card.prompt}
-          </Text>
-          <View style={styles.stats}>
-            <Text variant="button" color="green">
-              {`${BRIBE_LABEL}: ${formatEuros(card.accept.money)}`}
+          <View style={styles.statRow}>
+            <Text variant="button" color="text">
+              {BRIBE_LABEL}
             </Text>
-            <Text variant="button" color="red">
-              {`${EXPOSURE_LABEL}: +${card.accept.risk}%`}
+            <View style={styles.statValue}>
+              <Text variant="title" color="green">
+                {formatEuros(card.accept.money)}
+              </Text>
+              <GameImage
+                source={{ kind: 'icon', id: 'money' }}
+                style={styles.statIcon}
+                contentFit="contain"
+              />
+            </View>
+          </View>
+          <View style={[styles.statRow, styles.statRowLast]}>
+            <Text variant="button" color="text">
+              {EXPOSURE_LABEL}
+            </Text>
+            <Text variant="title" color="red">
+              {`+${card.accept.risk}%`}
             </Text>
           </View>
           <View style={styles.actions}>
@@ -94,7 +112,30 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: colors.blue,
     paddingHorizontal: spacing.lg,
-    paddingVertical: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+  centered: {
+    textAlign: 'center',
+  },
+  statRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingVertical: spacing.xs,
+    borderBottomWidth: 1,
+    borderBottomColor: colors.border,
+  },
+  statRowLast: {
+    borderBottomWidth: 0,
+  },
+  statValue: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: spacing.sm,
+  },
+  statIcon: {
+    width: 28,
+    height: 28,
   },
   body: {
     padding: spacing.lg,
@@ -102,7 +143,7 @@ const styles = StyleSheet.create({
   },
   art: {
     width: '100%',
-    height: 160,
+    height: 200,
     borderRadius: 8,
     borderCurve: 'continuous',
     backgroundColor: colors.surfaceMuted,

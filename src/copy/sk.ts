@@ -56,3 +56,5 @@ export const CLOSER =
 
 export const QUICK_COVER_HINT =
   'Zaplať a okamžite zníž riziko odhalenia. Niektoré krytia sa ti vrátia neskôr.'
+export const EVENT_QUESTION = 'Čo urobíš?'
+export const RISK_AFTER_EVENT = 'RIZIKO PO EVENTE:'
