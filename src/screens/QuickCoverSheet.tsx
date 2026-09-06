@@ -1,16 +1,17 @@
 import { Modal, Pressable, StyleSheet, Text, View } from 'react-native'
-import { CLOSE } from '@/copy/sk'
+import { CLOSE, QUICK_COVER_HINT } from '@/copy/sk'
 import { QUICK_COVER, type QuickCoverOption } from '@/content/quickCover'
 import { formatEuros } from '@/game/format'
 import { colors } from '@/theme/colors'
 
 type Props = {
   money: number
+  risk: number
   onPick: (id: string) => void
   onClose: () => void
 }
 
-export function QuickCoverSheet({ money, onPick, onClose }: Props) {
+export function QuickCoverSheet({ money, risk, onPick, onClose }: Props) {
   return (
     <Modal
       visible
@@ -31,8 +32,16 @@ export function QuickCoverSheet({ money, onPick, onClose }: Props) {
             <Text style={styles.close}>{CLOSE}</Text>
           </Pressable>
         </View>
+        <Text style={styles.hint}>{QUICK_COVER_HINT}</Text>
         {QUICK_COVER.map((row) => (
-          <CoverRow key={row.id} option={row} money={money} onPick={onPick} onClose={onClose} />
+          <CoverRow
+            key={row.id}
+            option={row}
+            money={money}
+            risk={risk}
+            onPick={onPick}
+            onClose={onClose}
+          />
         ))}
       </View>
     </Modal>
@@ -42,16 +51,19 @@ export function QuickCoverSheet({ money, onPick, onClose }: Props) {
 function CoverRow({
   option,
   money,
+  risk,
   onPick,
   onClose,
 }: {
   option: QuickCoverOption
   money: number
+  risk: number
   onPick: (id: string) => void
   onClose: () => void
 }) {
   const missing = option.cost - money
   const disabled = missing > 0
+  const nextRisk = Math.max(0, Math.trunc(risk) + option.riskDelta)
   return (
     <Pressable
       accessibilityRole="button"
@@ -65,11 +77,13 @@ function CoverRow({
       style={[styles.row, disabled ? styles.disabled : null]}
     >
       <Text style={styles.name}>{option.name}</Text>
+      <Text style={styles.benefit}>{`Riziko ${Math.trunc(risk)}% → ${nextRisk}%`}</Text>
       <Text style={styles.meta}>
-        {disabled
-          ? `Chýba ${formatEuros(missing)}`
-          : `${formatEuros(option.cost)} · ${option.riskDelta}%`}
+        {disabled ? `Chýba ${formatEuros(missing)}` : `Cena ${formatEuros(option.cost)}`}
       </Text>
+      {option.delayedRiskDelta > 0 ? (
+        <Text style={styles.warning}>{`Neskôr +${option.delayedRiskDelta}% rizika`}</Text>
+      ) : null}
     </Pressable>
   )
 }
@@ -90,6 +104,9 @@ const styles = StyleSheet.create({
     color: colors.gold,
     fontWeight: '700',
   },
+  hint: {
+    color: colors.muted,
+  },
   close: {
     color: colors.muted,
     fontWeight: '700',
@@ -109,7 +126,14 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontWeight: '700',
   },
+  benefit: {
+    color: colors.gold,
+    fontWeight: '700',
+  },
   meta: {
     color: colors.muted,
+  },
+  warning: {
+    color: colors.red,
   },
 })

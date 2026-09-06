@@ -55,3 +55,6 @@ export const SOURCES = 'Zdroje'
 
 export const CLOSER =
   'Toto je satira. Skutočné kauzy majú mená, spisy a rozsudky — nie swipe.'
+
+export const QUICK_COVER_HINT =
+  'Zaplať a okamžite zníž riziko odhalenia. Niektoré krytia sa ti vrátia neskôr.'

@@ -71,6 +71,7 @@ export function KauzyScreen() {
       {coverOpen ? (
         <QuickCoverSheet
           money={run.money}
+          risk={run.risk}
           onClose={() => setCoverOpen(false)}
           onPick={(id) => {
             void update(applyQuickCover(run, id))
