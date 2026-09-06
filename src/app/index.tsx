@@ -1,6 +1,7 @@
 import { router, type Href } from 'expo-router'
 import Storage from 'expo-sqlite/kv-store'
 import { createInitialRun } from '@/game/reducer'
+import { asyncAgeStore } from '@/onboarding/asyncAgeStore'
 import { asyncDisclaimerStore } from '@/onboarding/asyncDisclaimerStore'
 import { createRunRepository } from '@/save/runSave'
 import { BootGate } from '@/screens/BootGate'
@@ -11,6 +12,7 @@ export default function Index() {
   return (
     <BootGate
       store={asyncDisclaimerStore}
+      ageStore={asyncAgeStore}
       onStartGame={() => {
         repo.save(createInitialRun()).then(() => router.replace('/(hub)/kauzy'))
       }}
@@ -25,6 +27,9 @@ export default function Index() {
       }}
       onHowToPlay={() => {
         router.push('/ako-hrat' as Href)
+      }}
+      onSources={() => {
+        router.push('/zdroje' as Href)
       }}
     />
   )

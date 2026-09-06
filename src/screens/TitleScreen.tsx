@@ -1,14 +1,15 @@
 import { Pressable, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
+import { HOW_TO_PLAY } from '@/copy/howTo'
 import {
   ACHIEVEMENTS,
   LEADERBOARDS,
   SETTINGS,
+  SOURCES,
   START_GAME,
   TAGLINE,
   TITLE_LOCKUP,
 } from '@/copy/sk'
-import { HOW_TO_PLAY } from '@/copy/howTo'
 import { colors } from '@/theme/colors'
 
 type Props = {
@@ -17,6 +18,7 @@ type Props = {
   onLeaderboards?: () => void
   onAchievements?: () => void
   onHowToPlay?: () => void
+  onSources?: () => void
 }
 
 export function TitleScreen({
@@ -25,6 +27,7 @@ export function TitleScreen({
   onLeaderboards,
   onAchievements,
   onHowToPlay,
+  onSources,
 }: Props) {
   return (
     <SafeAreaView style={styles.container}>
@@ -43,6 +46,7 @@ export function TitleScreen({
       <View style={styles.secondary}>
         <SecondaryButton label={SETTINGS} onPress={onSettings} />
         <SecondaryButton label={HOW_TO_PLAY} onPress={onHowToPlay} />
+        <SecondaryButton label={SOURCES} onPress={onSources} />
         <SecondaryButton label={LEADERBOARDS} onPress={onLeaderboards} />
         <SecondaryButton label={ACHIEVEMENTS} onPress={onAchievements} />
       </View>
