@@ -20,6 +20,12 @@ export default function Index() {
       onAchievements={() => {
         router.push('/achievementy' as Href)
       }}
+      onSettings={() => {
+        router.push('/nastavenia' as Href)
+      }}
+      onHowToPlay={() => {
+        router.push('/ako-hrat' as Href)
+      }}
     />
   )
 }

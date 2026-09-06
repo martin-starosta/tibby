@@ -10,6 +10,8 @@ import { applyQuickCover } from '@/game/quickCover'
 import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
 import { createCareerRepository } from '@/save/careerSave'
 import { useRun } from '@/save/useRun'
+import { createSettingsStore } from '@/settings/settingsStore'
+import { Advisor, advisorVisible } from '@/screens/Advisor'
 import { CaseCardView } from '@/screens/CaseCardView'
 import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
@@ -20,6 +22,7 @@ import { colors } from '@/theme/colors'
 const KONTROLA = '/kontrola' as Href
 const FINALE = '/finale' as Href
 const careerRepo = createCareerRepository(Storage)
+const settingsStore = createSettingsStore(Storage)
 
 function routeForStatus(status: RunState['status']): Href | null {
   if (status === 'checkpoint' || status === 'exposed') {
@@ -40,7 +43,17 @@ export function KauzyScreen() {
   const [phase, setPhase] = useState<Phase>({ name: 'card' })
   const [coverOpen, setCoverOpen] = useState(false)
   const [gaugeOpen, setGaugeOpen] = useState(false)
+  const [advisorMuted, setAdvisorMuted] = useState(false)
+  const [advisorDismissed, setAdvisorDismissed] = useState(false)
   const card = run ? CASES[run.caseIndex - 1] : undefined
+
+  useEffect(() => {
+    settingsStore.load().then((settings) => setAdvisorMuted(settings.advisorMuted))
+  }, [])
+
+  useEffect(() => {
+    setAdvisorDismissed(false)
+  }, [run?.caseIndex])
 
   useEffect(() => {
     if (!run || phase.name === 'fact') {
@@ -160,6 +173,10 @@ export function KauzyScreen() {
           </View>
         ) : null}
       </ScrollView>
+      <Advisor
+        visible={advisorVisible(advisorMuted, advisorDismissed)}
+        onDismiss={() => setAdvisorDismissed(true)}
+      />
     </SafeAreaView>
   )
 }
