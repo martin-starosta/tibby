@@ -6,7 +6,7 @@ describe('QuickCoverSheet', () => {
     const user = userEvent.setup()
     const onPick = jest.fn()
     const onClose = jest.fn()
-    await render(<QuickCoverSheet money={80000} onPick={onPick} onClose={onClose} />)
+    await render(<QuickCoverSheet money={80000} risk={62} onPick={onPick} onClose={onClose} />)
 
     expect(screen.getByText('Politické krytie')).toBeOnTheScreen()
     expect(screen.getByText('Zastrašenie novinárov')).toBeOnTheScreen()
@@ -14,6 +14,9 @@ describe('QuickCoverSheet', () => {
     expect(screen.getByText('Falošné alibi')).toBeOnTheScreen()
     expect(screen.getByText('Zničenie dôkazov')).toBeOnTheScreen()
     expect(screen.getByText('Chýba €20,000')).toBeOnTheScreen()
+    expect(screen.getByText('Riziko 62% → 32%')).toBeOnTheScreen()
+    expect(screen.getByText('Cena €50,000')).toBeOnTheScreen()
+    expect(screen.getByText('Neskôr +10% rizika')).toBeOnTheScreen()
 
     await user.press(screen.getByRole('button', { name: 'ZAVRIEŤ' }))
     expect(onClose).toHaveBeenCalledTimes(1)
@@ -27,7 +30,7 @@ describe('QuickCoverSheet', () => {
   it('does not pick an unaffordable row', async () => {
     const user = userEvent.setup()
     const onPick = jest.fn()
-    await render(<QuickCoverSheet money={80000} onPick={onPick} onClose={jest.fn()} />)
+    await render(<QuickCoverSheet money={80000} risk={62} onPick={onPick} onClose={jest.fn()} />)
 
     await user.press(screen.getByRole('button', { name: 'Úplatok prokurátorovi' }))
     expect(onPick).not.toHaveBeenCalled()

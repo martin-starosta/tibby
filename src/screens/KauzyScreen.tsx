@@ -3,17 +3,29 @@ import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { router, type Href } from 'expo-router'
 import { CASES } from '@/content/deck'
-import { seedCheckpoint } from '@/game/devSeed'
+import { seedCheckpoint, seedFinale } from '@/game/devSeed'
 import { applyQuickCover } from '@/game/quickCover'
-import { applyDecision, type CaseCard } from '@/game/reducer'
+import { applyDecision, type CaseCard, type RunState } from '@/game/reducer'
 import { useRun } from '@/save/useRun'
 import { CaseCardView } from '@/screens/CaseCardView'
 import { FactSheet } from '@/screens/FactSheet'
 import { GameHud } from '@/screens/GameHud'
 import { QuickCoverSheet } from '@/screens/QuickCoverSheet'
+import { RiskGaugeScreen } from '@/screens/RiskGaugeScreen'
 import { colors } from '@/theme/colors'
 
 const KONTROLA = '/kontrola' as Href
+const FINALE = '/finale' as Href
+
+function routeForStatus(status: RunState['status']): Href | null {
+  if (status === 'checkpoint' || status === 'exposed') {
+    return KONTROLA
+  }
+  if (status === 'finale') {
+    return FINALE
+  }
+  return null
+}
 
 type Phase =
   | { name: 'card' }
@@ -23,14 +35,16 @@ export function KauzyScreen() {
   const { run, update } = useRun()
   const [phase, setPhase] = useState<Phase>({ name: 'card' })
   const [coverOpen, setCoverOpen] = useState(false)
+  const [gaugeOpen, setGaugeOpen] = useState(false)
   const card = run ? CASES[run.caseIndex - 1] : undefined
 
   useEffect(() => {
     if (!run || phase.name === 'fact') {
       return
     }
-    if (run.status === 'checkpoint' || run.status === 'exposed') {
-      router.replace(KONTROLA)
+    const nextRoute = routeForStatus(run.status)
+    if (nextRoute) {
+      router.replace(nextRoute)
     }
   }, [run, phase])
 
@@ -48,14 +62,27 @@ export function KauzyScreen() {
 
   return (
     <SafeAreaView style={styles.screen} edges={['top']}>
-      <GameHud money={run.money} risk={run.risk} onPressRisk={() => setCoverOpen(true)} />
+      <GameHud
+        money={run.money}
+        risk={run.risk}
+        onPressRisk={() => setCoverOpen(true)}
+        onLongPressRisk={() => setGaugeOpen(true)}
+      />
       {coverOpen ? (
         <QuickCoverSheet
           money={run.money}
+          risk={run.risk}
           onClose={() => setCoverOpen(false)}
           onPick={(id) => {
             void update(applyQuickCover(run, id))
           }}
+        />
+      ) : null}
+      {gaugeOpen ? (
+        <RiskGaugeScreen
+          risk={run.risk}
+          ownedIds={run.ownedInvestmentIds}
+          onClose={() => setGaugeOpen(false)}
         />
       ) : null}
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.body}>
@@ -66,8 +93,9 @@ export function KauzyScreen() {
             riskDelta={phase.kind === 'accept' ? phase.card.accept.risk : phase.card.refuse.risk}
             onContinue={() => {
               setPhase({ name: 'card' })
-              if (run.status === 'checkpoint' || run.status === 'exposed') {
-                router.replace(KONTROLA)
+              const nextRoute = routeForStatus(run.status)
+              if (nextRoute) {
+                router.replace(nextRoute)
               }
             }}
           />
@@ -102,14 +130,25 @@ export function KauzyScreen() {
             </Pressable>
             <Pressable
               accessibilityRole="button"
-              accessibilityLabel="QA Kontrola 101"
+              accessibilityLabel="QA Finále 49"
               onPress={() => {
-                void update(seedCheckpoint(101)).then(() => {
-                  router.replace(KONTROLA)
+                void update(seedFinale(49)).then(() => {
+                  router.replace(FINALE)
                 })
               }}
             >
-              <Text style={styles.done}>QA Kontrola 101</Text>
+              <Text style={styles.done}>QA Finále 49</Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              accessibilityLabel="QA Finále 50"
+              onPress={() => {
+                void update(seedFinale(50)).then(() => {
+                  router.replace(FINALE)
+                })
+              }}
+            >
+              <Text style={styles.done}>QA Finále 50</Text>
             </Pressable>
           </View>
         ) : null}

@@ -6,21 +6,28 @@ type Props = {
   money: number
   risk: number
   onPressRisk?: () => void
+  onLongPressRisk?: () => void
 }
 
-export function GameHud({ money, risk, onPressRisk }: Props) {
+export function GameHud({ money, risk, onPressRisk, onLongPressRisk }: Props) {
   return (
     <View style={styles.row}>
       <Text style={styles.money} accessibilityLabel="money">
         {formatEuros(money)}
       </Text>
-      <Pressable
-        accessibilityRole="button"
-        accessibilityLabel={formatRiskChip(risk)}
-        onPress={onPressRisk}
-      >
-        <Text style={styles.risk}>{formatRiskChip(risk)}</Text>
-      </Pressable>
+      <View style={styles.riskWrap}>
+        <Pressable
+          accessibilityRole="button"
+          accessibilityLabel={formatRiskChip(risk)}
+          onPress={onPressRisk}
+          onLongPress={onLongPressRisk}
+        >
+          <Text style={styles.risk}>{formatRiskChip(risk)}</Text>
+        </Pressable>
+        <Pressable accessibilityRole="button" accessibilityLabel="i" onPress={onLongPressRisk}>
+          <Text style={styles.info}>i</Text>
+        </Pressable>
+      </View>
     </View>
   )
 }
@@ -36,8 +43,17 @@ const styles = StyleSheet.create({
     color: colors.gold,
     fontWeight: '700',
   },
+  riskWrap: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   risk: {
     color: colors.text,
+    fontWeight: '700',
+  },
+  info: {
+    color: colors.gold,
     fontWeight: '700',
   },
 })
